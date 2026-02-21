@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import {
   motion,
   useScroll,
@@ -8,6 +8,7 @@ import {
   useInView,
   useMotionValue,
   useSpring,
+  AnimatePresence,
   type MotionValue,
 } from "framer-motion";
 import {
@@ -20,24 +21,171 @@ import {
   Mail,
   Star,
   ArrowRight,
-  Shirt,
-  WashingMachine,
-  Timer,
-  Truck,
+  ArrowLeft,
   CheckCircle2,
   Instagram,
   MessageCircle,
   Zap,
-  Leaf,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Menu,
+  X,
+  Users,
+  TrendingUp,
+  Calendar,
+  DollarSign,
+  Target,
+  Award,
+  Building2,
+  Handshake,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import {
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 
-/* ─── Animated Counter ─── */
-function AnimatedNumber({ value, suffix = "" }: { value: number; suffix?: string }) {
+/* ═══════════════════════════════════════════
+   DATA ARRAYS — edit these to update content
+   ═══════════════════════════════════════════ */
+
+const heroSlides = [
+  {
+    image: "https://picsum.photos/id/517/1920/1080",
+    tagline: "Bersih Sempurna,\nSetiap Helai.",
+    subtitle: "Layanan laundry profesional dengan standar premium untuk pakaian Anda.",
+  },
+  {
+    image: "https://picsum.photos/id/525/1920/1080",
+    tagline: "Mitra Bisnis\nTerpercaya.",
+    subtitle: "Bergabung dengan jaringan franchise laundry terbesar di Indonesia.",
+  },
+  {
+    image: "https://picsum.photos/id/534/1920/1080",
+    tagline: "Teknologi Modern,\nHasil Maksimal.",
+    subtitle: "Mesin cuci industri terkini dengan deterjen ramah lingkungan.",
+  },
+];
+
+const companyTimeline = [
+  { year: "2019", title: "Didirikan", desc: "SHO SHA LAUNDRY berdiri dengan 1 outlet pertama di Jakarta." },
+  { year: "2020", title: "Ekspansi Digital", desc: "Meluncurkan sistem order online dan layanan antar-jemput." },
+  { year: "2021", title: "10 Outlet", desc: "Membuka cabang ke-10 dan memulai program kemitraan." },
+  { year: "2022", title: "Program Franchise", desc: "Resmi meluncurkan 3 paket franchise untuk mitra baru." },
+  { year: "2023", title: "50+ Mitra", desc: "Jaringan mitra tersebar di Jabodetabek dan kota-kota besar." },
+  { year: "2024", title: "Award Winner", desc: "Meraih penghargaan Best Laundry Franchise Indonesia." },
+];
+
+const mitraPackages = [
+  {
+    name: "Silver",
+    modal: 15_000_000,
+    pelanggan: 30,
+    harga: 7_000,
+    features: [
+      "1 mesin cuci 8kg",
+      "1 mesin pengering",
+      "Perlengkapan dasar",
+      "Training 3 hari",
+      "Branding outlet",
+    ],
+  },
+  {
+    name: "Gold",
+    modal: 30_000_000,
+    pelanggan: 60,
+    harga: 7_000,
+    features: [
+      "2 mesin cuci 12kg",
+      "2 mesin pengering",
+      "Perlengkapan lengkap",
+      "Training 7 hari",
+      "Branding outlet premium",
+      "Sistem POS digital",
+      "Support marketing 3 bulan",
+    ],
+  },
+  {
+    name: "Platinum",
+    modal: 60_000_000,
+    pelanggan: 120,
+    harga: 7_000,
+    features: [
+      "4 mesin cuci 15kg",
+      "3 mesin pengering",
+      "Full perlengkapan + AC",
+      "Training 14 hari",
+      "Full branding + interior",
+      "Sistem POS + CRM",
+      "Support marketing 6 bulan",
+      "Konsultasi bisnis 1 tahun",
+    ],
+  },
+];
+
+const galleryImages = [
+  { src: "https://picsum.photos/id/395/600/400", alt: "Outlet modern SHO SHA", span: "tall" as const },
+  { src: "https://picsum.photos/id/401/600/400", alt: "Mesin cuci industri", span: "normal" as const },
+  { src: "https://picsum.photos/id/403/600/400", alt: "Tim profesional", span: "wide" as const },
+  { src: "https://picsum.photos/id/399/600/400", alt: "Hasil cucian rapi", span: "normal" as const },
+  { src: "https://picsum.photos/id/411/600/400", alt: "Proses quality control", span: "tall" as const },
+  { src: "https://picsum.photos/id/416/600/400", alt: "Area packing premium", span: "normal" as const },
+  { src: "https://picsum.photos/id/431/600/400", alt: "Interior outlet bersih", span: "wide" as const },
+  { src: "https://picsum.photos/id/435/600/400", alt: "Layanan antar jemput", span: "normal" as const },
+];
+
+const marqueeWords = [
+  "BERSIH", "WANGI", "CEPAT", "PROFESIONAL", "TERPERCAYA", "PREMIUM",
+  "HIGIENIS", "RAPI", "BERKUALITAS", "MODERN",
+];
+
+const navLinks = [
+  { label: "Tentang Kami", href: "#tentang" },
+  { label: "Layanan", href: "#layanan" },
+  { label: "Gallery", href: "#gallery" },
+  { label: "Perhitungan ROI", href: "#roi" },
+];
+
+/* ═══════════════════════════════════════════
+   HELPER FUNCTIONS
+   ═══════════════════════════════════════════ */
+
+function formatRupiah(amount: number): string {
+  if (amount >= 1_000_000_000) return `${(amount / 1_000_000_000).toFixed(1)} Miliar`;
+  if (amount >= 1_000_000) return `${(amount / 1_000_000).toFixed(1)} Juta`;
+  if (amount >= 1_000) return `${(amount / 1_000).toFixed(0)} Ribu`;
+  return amount.toString();
+}
+
+function calculateROI(pkg: typeof mitraPackages[number]) {
+  const pendapatanBulanan = pkg.pelanggan * pkg.harga * 26;
+  const biayaOperasional = pendapatanBulanan * 0.4;
+  const keuntunganBersih = pendapatanBulanan - biayaOperasional;
+  const bepBulan = Math.ceil(pkg.modal / keuntunganBersih);
+  const roiPersen = Math.round((keuntunganBersih * 12 / pkg.modal) * 100);
+  return { pendapatanBulanan, keuntunganBersih, bepBulan, roiPersen };
+}
+
+/* ═══════════════════════════════════════════
+   COMPONENTS
+   ═══════════════════════════════════════════ */
+
+function AnimatedNumber({
+  value,
+  suffix = "",
+  prefix = "",
+}: {
+  value: number;
+  suffix?: string;
+  prefix?: string;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const motionVal = useMotionValue(0);
   const spring = useSpring(motionVal, { damping: 40, stiffness: 120 });
@@ -49,21 +197,18 @@ function AnimatedNumber({ value, suffix = "" }: { value: number; suffix?: string
 
   useEffect(() => {
     const unsub = spring.on("change", (v) => {
-      if (ref.current) ref.current.textContent = Math.round(v) + suffix;
+      if (ref.current) ref.current.textContent = prefix + Math.round(v).toLocaleString("id-ID") + suffix;
     });
     return unsub;
-  }, [spring, suffix]);
+  }, [spring, suffix, prefix]);
 
-  return <span ref={ref}>0{suffix}</span>;
+  return <span ref={ref}>{prefix}0{suffix}</span>;
 }
 
-/* ─── Marquee ─── */
 function Marquee({ children, reverse = false }: { children: React.ReactNode; reverse?: boolean }) {
   return (
     <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-      <div
-        className={`flex shrink-0 gap-6 py-4 ${reverse ? "animate-marquee-reverse" : "animate-marquee"}`}
-      >
+      <div className={`flex shrink-0 gap-6 py-4 ${reverse ? "animate-marquee-reverse" : "animate-marquee"}`}>
         {children}
         {children}
       </div>
@@ -71,234 +216,247 @@ function Marquee({ children, reverse = false }: { children: React.ReactNode; rev
   );
 }
 
-/* ─── Parallax wrapper ─── */
-function useParallax(value: MotionValue<number>, distance: number) {
-  return useTransform(value, [0, 1], [-distance, distance]);
-}
-
-/* ─── Data ─── */
-const services = [
-  { icon: Shirt, title: "Cuci Setrika", desc: "Bersih, rapi, dan wangi dengan perawatan premium", price: "7K", unit: "/kg" },
-  { icon: WashingMachine, title: "Dry Clean", desc: "Profesional untuk pakaian formal & delicate fabric", price: "15K", unit: "/kg" },
-  { icon: Timer, title: "Express 6H", desc: "Layanan kilat untuk kebutuhan mendesak Anda", price: "12K", unit: "/kg" },
-  { icon: Sparkles, title: "Premium Care", desc: "Ekstra untuk bahan premium — sutra, wool, cashmere", price: "25K", unit: "/kg" },
-  { icon: Truck, title: "Antar Jemput", desc: "Free pickup & delivery untuk area sekitar", price: "FREE", unit: "*" },
-  { icon: Droplets, title: "Cuci Satuan", desc: "Per item untuk kebutuhan khusus Anda", price: "10K", unit: "+" },
-];
-
-const processSteps = [
-  { step: "01", title: "Jemput", desc: "Tim kami menjemput cucian langsung ke lokasi Anda" },
-  { step: "02", title: "Sortir", desc: "Pemisahan berdasarkan warna, bahan, dan jenis perawatan" },
-  { step: "03", title: "Cuci", desc: "Proses pencucian dengan mesin modern & deterjen premium" },
-  { step: "04", title: "Antar", desc: "Cucian bersih diantarkan kembali, rapi & wangi" },
-];
-
-const testimonials = [
-  { name: "Rina Maharani", role: "Ibu Rumah Tangga", text: "Hasilnya selalu memuaskan! Baju wangi dan rapi. Sudah langganan 2 tahun dan tidak pernah mengecewakan.", rating: 5 },
-  { name: "Budi Santoso", role: "Karyawan Swasta", text: "Layanan express-nya game changer. Pagi antar, sore sudah bisa diambil. Kualitasnya tetap premium.", rating: 5 },
-  { name: "Dian Permata", role: "Mahasiswa", text: "Harga ramah di kantong mahasiswa tapi kualitasnya nggak murahan. Pewanginya juga tahan lama banget!", rating: 5 },
-  { name: "Andre Wijaya", role: "Entrepreneur", text: "Untuk jas dan kemeja formal, saya selalu percaya SHO SHA. Dry clean-nya benar-benar profesional.", rating: 5 },
-];
-
-const marqueeWords = [
-  "BERSIH", "WANGI", "CEPAT", "PROFESIONAL", "TERPERCAYA", "PREMIUM",
-  "HIGIENIS", "RAPI", "BERKUALITAS", "MODERN",
-];
+/* ═══════════════════════════════════════════
+   MAIN PAGE
+   ═══════════════════════════════════════════ */
 
 export default function Home() {
+  /* ── Hero carousel state ── */
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const slideCount = heroSlides.length;
+
+  const nextSlide = useCallback(() => setCurrentSlide((p) => (p + 1) % slideCount), [slideCount]);
+  const prevSlide = useCallback(() => setCurrentSlide((p) => (p - 1 + slideCount) % slideCount), [slideCount]);
+
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(nextSlide, 5000);
+    return () => clearInterval(timer);
+  }, [isPaused, nextSlide]);
+
+  /* ── Navbar scroll state ── */
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  /* ── Hero parallax ── */
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
+  /* ── About show more ── */
+  const [showMoreAbout, setShowMoreAbout] = useState(false);
+
+  /* ── Gallery lightbox ── */
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  /* ── ROI calculator ── */
+  const [selectedPackage, setSelectedPackage] = useState("Silver");
+  const currentPkg = mitraPackages.find((p) => p.name === selectedPackage) ?? mitraPackages[0];
+  const roi = calculateROI(currentPkg);
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      {/* ═══ NAVBAR ═══ */}
+      {/* ═══ NAVBAR — floating glassmorphism ═══ */}
       <nav className="fixed top-0 z-50 w-full">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="mt-4 flex h-14 items-center justify-between rounded-2xl border border-border/50 bg-background/70 px-6 shadow-lg shadow-black/5 backdrop-blur-xl">
+          <div
+            className={`mt-4 flex h-14 items-center justify-between rounded-2xl border border-border/50 px-6 shadow-lg shadow-black/5 backdrop-blur-xl transition-all duration-300 ${
+              scrolled ? "bg-background/90" : "bg-background/70"
+            }`}
+          >
             <a href="#" className="flex items-center gap-2.5">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/80">
                 <Droplets className="h-4 w-4 text-primary-foreground" />
               </div>
               <span className="text-base font-bold tracking-tight">SHO SHA</span>
             </a>
+
+            {/* Desktop nav */}
             <div className="hidden items-center gap-7 md:flex">
-              {["Layanan", "Proses", "Harga", "Testimoni", "Kontak"].map((item) => (
+              {navLinks.map((item) => (
                 <a
-                  key={item}
-                  href={`#${item.toLowerCase()}`}
+                  key={item.label}
+                  href={item.href}
                   className="text-[13px] font-medium text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  {item}
+                  {item.label}
                 </a>
               ))}
             </div>
-            <Button size="sm" className="rounded-xl text-xs" asChild>
-              <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
-                <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
-                WhatsApp
-              </a>
-            </Button>
+
+            <div className="flex items-center gap-3">
+              <Button size="sm" className="hidden rounded-xl text-xs sm:inline-flex" asChild>
+                <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
+                  WhatsApp
+                </a>
+              </Button>
+
+              {/* Mobile hamburger */}
+              <button
+                className="flex h-9 w-9 items-center justify-center rounded-xl md:hidden"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
+            </div>
           </div>
+
+          {/* Mobile menu slide-down */}
+          <AnimatePresence>
+            {mobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden md:hidden"
+              >
+                <div className="mt-2 flex flex-col gap-1 rounded-2xl border border-border/50 bg-background/95 p-4 backdrop-blur-xl">
+                  {navLinks.map((item) => (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                  <Button size="sm" className="mt-2 rounded-xl text-xs" asChild>
+                    <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                      <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
+                      WhatsApp
+                    </a>
+                  </Button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </nav>
 
-      {/* ═══ HERO ═══ */}
-      <section ref={heroRef} id="beranda" className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-6">
-        {/* Animated gradient orbs */}
-        <div className="pointer-events-none absolute inset-0">
+      {/* ═══ HERO — Interactive Carousel ═══ */}
+      <section
+        ref={heroRef}
+        id="beranda"
+        className="relative min-h-[100dvh] overflow-hidden"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Background slides */}
+        <AnimatePresence mode="wait">
           <motion.div
-            animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -left-32 top-20 h-[600px] w-[600px] rounded-full bg-primary/10 blur-[120px]"
-          />
-          <motion.div
-            animate={{ x: [0, -20, 0], y: [0, 30, 0] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -right-32 bottom-20 h-[500px] w-[500px] rounded-full bg-accent/8 blur-[120px]"
-          />
-          <motion.div
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-secondary/8 blur-[100px]"
-          />
-        </div>
-
-        {/* Grid pattern overlay */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: "linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-
-        <motion.div style={{ y: heroY, opacity: heroOpacity }} className="relative z-10 mx-auto max-w-5xl text-center">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <Badge variant="outline" className="mb-8 gap-2 border-primary/30 bg-primary/5 px-4 py-2 text-sm font-medium text-primary">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-              </span>
-              Menerima order sekarang
-            </Badge>
+            key={currentSlide}
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="absolute inset-0"
+          >
+            <motion.div style={{ y: heroY }} className="absolute inset-0">
+              <img
+                src={heroSlides[currentSlide].image}
+                alt={heroSlides[currentSlide].tagline}
+                className="h-full w-full object-cover"
+              />
+            </motion.div>
           </motion.div>
+        </AnimatePresence>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.6 }}
-            className="text-5xl font-extrabold leading-[1.1] tracking-tight sm:text-6xl md:text-7xl lg:text-8xl"
-          >
-            <span className="block">Bersih itu</span>
-            <span className="relative inline-block">
-              <span className="bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent">
-                mudah.
-              </span>
-              <motion.svg
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ delay: 0.8, duration: 1, ease: "easeOut" }}
-                className="absolute -bottom-2 left-0 w-full"
-                viewBox="0 0 200 12"
-                fill="none"
+        {/* Dark gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
+
+        {/* Content */}
+        <motion.div style={{ opacity: heroOpacity }} className="relative z-10 flex min-h-[100dvh] items-center px-6">
+          <div className="mx-auto max-w-5xl">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -30 }}
+                transition={{ duration: 0.6 }}
               >
-                <motion.path
-                  d="M2 8 C50 2, 150 2, 198 8"
-                  stroke="url(#underline-gradient)"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ delay: 0.8, duration: 1, ease: "easeOut" }}
-                />
-                <defs>
-                  <linearGradient id="underline-gradient" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="oklch(0.7 0.18 50)" />
-                    <stop offset="1" stopColor="oklch(0.92 0.08 85)" />
-                  </linearGradient>
-                </defs>
-              </motion.svg>
-            </span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl"
-          >
-            Serahkan cucian Anda pada ahlinya. Kami rawat setiap helai pakaian
-            dengan <span className="font-medium text-foreground">standar premium</span> — dari
-            jemput hingga antar kembali ke pintu rumah Anda.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
-          >
-            <Button size="lg" className="group gap-2 rounded-xl px-8 text-base" asChild>
-              <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
-                Pesan Sekarang
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </a>
-            </Button>
-            <Button size="lg" variant="ghost" className="gap-2 rounded-xl text-base text-muted-foreground" asChild>
-              <a href="#proses">
-                Lihat cara kerjanya
-                <ChevronDown className="h-4 w-4" />
-              </a>
-            </Button>
-          </motion.div>
-
-          {/* Floating stats cards */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-            className="mx-auto mt-20 grid max-w-xl grid-cols-3 gap-4"
-          >
-            {[
-              { value: 5, suffix: "+", label: "Tahun Pengalaman", icon: Shield },
-              { value: 2000, suffix: "+", label: "Pelanggan Puas", icon: Star },
-              { value: 98, suffix: "%", label: "Repeat Order", icon: Zap },
-            ].map((stat) => (
-              <div
-                key={stat.label}
-                className="group rounded-2xl border border-border/50 bg-card/50 p-4 backdrop-blur-sm transition-all duration-300 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5"
-              >
-                <stat.icon className="mx-auto mb-2 h-4 w-4 text-primary" />
-                <p className="text-2xl font-bold tabular-nums sm:text-3xl">
-                  <AnimatedNumber value={stat.value} suffix={stat.suffix} />
+                <h1 className="whitespace-pre-line text-5xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
+                  {heroSlides[currentSlide].tagline}
+                </h1>
+                <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70 sm:text-xl">
+                  {heroSlides[currentSlide].subtitle}
                 </p>
-                <p className="mt-0.5 text-[11px] text-muted-foreground">{stat.label}</p>
-              </div>
-            ))}
-          </motion.div>
+              </motion.div>
+            </AnimatePresence>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              className="mt-10 flex flex-col items-start gap-4 sm:flex-row"
+            >
+              <Button size="lg" className="group gap-2 rounded-xl px-8 text-base" asChild>
+                <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                  Hubungi Kami
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </a>
+              </Button>
+              <Button
+                size="lg"
+                variant="ghost"
+                className="gap-2 rounded-xl border border-white/20 text-base text-white hover:bg-white/10"
+                asChild
+              >
+                <a href="#tentang">
+                  Pelajari Lebih Lanjut
+                  <ChevronDown className="h-4 w-4" />
+                </a>
+              </Button>
+            </motion.div>
+          </div>
         </motion.div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.5 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        {/* Navigation arrows */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20 sm:left-8"
+          aria-label="Previous slide"
         >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-            className="flex h-10 w-6 items-start justify-center rounded-full border-2 border-muted-foreground/30 p-1.5"
-          >
-            <motion.div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/50" />
-          </motion.div>
-        </motion.div>
+          <ChevronLeft className="h-6 w-6" />
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute right-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20 sm:right-8"
+          aria-label="Next slide"
+        >
+          <ChevronRight className="h-6 w-6" />
+        </button>
+
+        {/* Dots navigation */}
+        <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-2">
+          {heroSlides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentSlide(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              className={`h-2 rounded-full transition-all duration-500 ${
+                i === currentSlide ? "w-8 bg-white" : "w-2 bg-white/40"
+              }`}
+            />
+          ))}
+        </div>
       </section>
 
       {/* ═══ MARQUEE STRIP ═══ */}
-      <div className="border-y border-border/50 bg-accent py-5">
+      <div className="bg-accent py-5">
         <Marquee>
           {marqueeWords.map((word) => (
             <span key={word} className="flex items-center gap-6 text-sm font-bold tracking-[0.2em] text-accent-foreground/70">
@@ -309,72 +467,139 @@ export default function Home() {
         </Marquee>
       </div>
 
-      {/* ═══ BENTO GRID SERVICES ═══ */}
-      <section id="layanan" className="px-6 py-28">
+      {/* ═══ TENTANG KAMI ═══ */}
+      <section id="tentang" className="px-6 py-28">
         <div className="mx-auto max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-          >
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Layanan</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Semua yang Anda butuhkan,
-              <br />
-              <span className="text-muted-foreground">dalam satu tempat.</span>
-            </h2>
-          </motion.div>
+          <div className="grid gap-16 lg:grid-cols-2">
+            {/* Left — visual stats */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+              className="relative"
+            >
+              <div className="grid grid-cols-2 gap-4">
+                <div className="rounded-3xl bg-gradient-to-br from-primary to-primary/80 p-6 text-primary-foreground">
+                  <Shield className="mb-3 h-8 w-8" />
+                  <p className="text-4xl font-extrabold">
+                    <AnimatedNumber value={5} suffix="+" />
+                  </p>
+                  <p className="mt-1 text-sm text-primary-foreground/70">Tahun Pengalaman</p>
+                </div>
+                <div className="rounded-3xl border border-border/50 bg-card p-6">
+                  <Users className="mb-3 h-8 w-8 text-primary" />
+                  <p className="text-4xl font-extrabold">
+                    <AnimatedNumber value={2000} suffix="+" />
+                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">Pelanggan Puas</p>
+                </div>
+                <div className="rounded-3xl border border-border/50 bg-card p-6">
+                  <Building2 className="mb-3 h-8 w-8 text-primary" />
+                  <p className="text-4xl font-extrabold">
+                    <AnimatedNumber value={50} suffix="+" />
+                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">Outlet Mitra</p>
+                </div>
+                <div className="rounded-3xl bg-accent p-6 text-accent-foreground">
+                  <Zap className="mb-3 h-8 w-8" />
+                  <p className="text-4xl font-extrabold">
+                    <AnimatedNumber value={98} suffix="%" />
+                  </p>
+                  <p className="mt-1 text-sm text-accent-foreground/70">Repeat Order</p>
+                </div>
+              </div>
+            </motion.div>
 
-          {/* Bento Grid */}
-          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((service, i) => (
-              <motion.div
-                key={service.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: i * 0.08, duration: 0.5 }}
-                className={`${i === 0 ? "sm:col-span-2 lg:col-span-1 lg:row-span-2" : ""}`}
+            {/* Right — company story */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6 }}
+            >
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Tentang Kami</p>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+                Lebih dari sekadar{" "}
+                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  laundry.
+                </span>
+              </h2>
+              <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+                SHO SHA LAUNDRY didirikan pada tahun 2019 dengan misi sederhana: memberikan
+                layanan laundry terbaik dengan harga terjangkau. Kami percaya bahwa pakaian
+                bersih dan wangi adalah hak semua orang.
+              </p>
+
+              <AnimatePresence>
+                {showMoreAbout && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.4 }}
+                    className="overflow-hidden"
+                  >
+                    <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+                      Dengan tim profesional dan mesin berteknologi tinggi, kami melayani ribuan
+                      pelanggan setiap bulannya. Kini, SHO SHA telah berkembang menjadi jaringan
+                      franchise dengan 50+ mitra di seluruh Indonesia. Kami terus berinovasi
+                      untuk memberikan pengalaman laundry terbaik — dari proses pencucian hingga
+                      pengantaran ke pintu rumah Anda.
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <button
+                onClick={() => setShowMoreAbout(!showMoreAbout)}
+                className="mt-4 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
               >
-                <div
-                  className={`group relative h-full overflow-hidden rounded-3xl border border-border/50 bg-card p-6 transition-all duration-500 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5 ${
-                    i === 0 ? "flex flex-col justify-between lg:p-8" : ""
+                {showMoreAbout ? "Tampilkan Lebih Sedikit" : "Baca Selengkapnya"}
+              </button>
+            </motion.div>
+          </div>
+
+          {/* Timeline */}
+          <div className="mt-24">
+            <h3 className="mb-12 text-center text-2xl font-bold">Perjalanan Kami</h3>
+            <div className="relative">
+              {/* Center line */}
+              <div className="absolute left-4 top-0 h-full w-px bg-border md:left-1/2 md:-translate-x-px" />
+
+              {companyTimeline.map((item, i) => (
+                <motion.div
+                  key={item.year}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ delay: i * 0.1, duration: 0.5 }}
+                  className={`relative mb-10 flex items-start gap-8 pl-12 md:pl-0 ${
+                    i % 2 === 0 ? "md:flex-row md:text-right" : "md:flex-row-reverse md:text-left"
                   }`}
                 >
-                  {/* Hover gradient */}
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/[0.03] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  {/* Dot */}
+                  <div className="absolute left-2.5 top-1 h-3 w-3 rounded-full border-2 border-primary bg-background md:left-1/2 md:-translate-x-1.5" />
 
-                  <div className="relative">
-                    <div className="mb-4 inline-flex rounded-2xl bg-primary/10 p-3 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
-                      <service.icon className={i === 0 ? "h-7 w-7" : "h-5 w-5"} />
-                    </div>
-                    <h3 className={`font-bold ${i === 0 ? "text-2xl" : "text-lg"}`}>{service.title}</h3>
-                    <p className={`mt-2 text-muted-foreground ${i === 0 ? "text-base" : "text-sm"}`}>
-                      {service.desc}
-                    </p>
+                  <div className={`flex-1 ${i % 2 === 0 ? "md:pr-16" : "md:pl-16"}`}>
+                    <span className="text-sm font-bold text-primary">{item.year}</span>
+                    <h4 className="mt-1 text-lg font-bold">{item.title}</h4>
+                    <p className="mt-1 text-sm text-muted-foreground">{item.desc}</p>
                   </div>
-
-                  <div className={`relative ${i === 0 ? "mt-8" : "mt-4"}`}>
-                    <div className="flex items-baseline gap-0.5">
-                      <span className="text-xs text-muted-foreground">Rp</span>
-                      <span className={`font-bold text-primary ${i === 0 ? "text-4xl" : "text-2xl"}`}>{service.price}</span>
-                      <span className="text-sm text-muted-foreground">{service.unit}</span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+                  <div className="hidden flex-1 md:block" />
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ═══ PROCESS — Visual Timeline ═══ */}
-      <section id="proses" className="relative overflow-hidden bg-accent px-6 py-28 text-accent-foreground">
-        {/* Large background text */}
+      {/* ═══ LAYANAN — Paket Mitra ═══ */}
+      <section id="layanan" className="relative overflow-hidden bg-accent px-6 py-28 text-accent-foreground">
+        {/* Ghost background text */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
           <span className="select-none text-[20vw] font-black leading-none tracking-tighter text-accent-foreground/[0.03]">
-            PROSES
+            MITRA
           </span>
         </div>
 
@@ -384,171 +609,79 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
+            className="text-center"
           >
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Cara Kerja</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Kemitraan</p>
             <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Semudah{" "}
-              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                4 langkah.
-              </span>
+              Pilih Paket Mitra Anda
             </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-accent-foreground/60">
+              Mulai bisnis laundry Anda bersama SHO SHA. Tiga paket investasi dengan dukungan penuh dari kami.
+            </p>
           </motion.div>
 
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {processSteps.map((s, i) => (
+          <div className="mt-16 grid items-end gap-6 lg:grid-cols-3">
+            {mitraPackages.map((pkg, i) => (
               <motion.div
-                key={s.step}
+                key={pkg.name}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: i * 0.15, duration: 0.5 }}
-                className="group relative"
-              >
-                {/* Connector line */}
-                {i < processSteps.length - 1 && (
-                  <div className="absolute right-0 top-10 hidden h-px w-6 translate-x-full bg-gradient-to-r from-primary/50 to-transparent lg:block" />
-                )}
-                <div className="rounded-3xl border border-accent-foreground/10 bg-accent-foreground/5 p-6 backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:bg-accent-foreground/10">
-                  <span className="text-5xl font-black text-primary/20 transition-colors group-hover:text-primary/40">
-                    {s.step}
-                  </span>
-                  <h3 className="mt-3 text-xl font-bold">{s.title}</h3>
-                  <p className="mt-2 text-sm text-accent-foreground/60">{s.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ BIG STATEMENT ═══ */}
-      <section className="relative overflow-hidden px-6 py-32">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-1/4 top-1/2 h-[400px] w-[400px] -translate-y-1/2 rounded-full bg-primary/5 blur-[100px]" />
-          <div className="absolute right-1/4 top-1/2 h-[300px] w-[300px] -translate-y-1/2 rounded-full bg-secondary/8 blur-[100px]" />
-        </div>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
-          className="relative mx-auto max-w-4xl text-center"
-        >
-          <h2 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl md:text-6xl">
-            Kami tidak hanya mencuci pakaian.
-            <br />
-            <span className="bg-gradient-to-r from-accent via-accent to-primary bg-clip-text text-transparent">
-              Kami merawatnya.
-            </span>
-          </h2>
-          <div className="mx-auto mt-12 flex flex-wrap items-center justify-center gap-6">
-            {[
-              { icon: Leaf, label: "Eco-Friendly" },
-              { icon: Shield, label: "Bergaransi" },
-              { icon: Zap, label: "Express Ready" },
-              { icon: Clock, label: "24/7 Order" },
-            ].map((item) => (
-              <div key={item.label} className="flex items-center gap-2 rounded-full border border-border/50 bg-card px-5 py-2.5 text-sm font-medium">
-                <item.icon className="h-4 w-4 text-primary" />
-                {item.label}
-              </div>
-            ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* ═══ PRICING ═══ */}
-      <section id="harga" className="px-6 py-28">
-        <div className="mx-auto max-w-5xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Harga</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Transparan. Tanpa biaya tersembunyi.
-            </h2>
-          </motion.div>
-
-          <div className="mt-16 grid gap-6 lg:grid-cols-3">
-            {[
-              {
-                name: "Reguler",
-                price: "7K",
-                desc: "Untuk kebutuhan sehari-hari",
-                features: ["Cuci + Setrika", "Deterjen premium", "Selesai 2-3 hari", "Pewangi pilihan"],
-                popular: false,
-                accent: false,
-              },
-              {
-                name: "Express",
-                price: "12K",
-                desc: "Butuh cepat? Ini solusinya",
-                features: ["Cuci + Setrika", "Selesai 6 jam", "Deterjen premium", "Pewangi pilihan", "Prioritas antrian"],
-                popular: true,
-                accent: true,
-              },
-              {
-                name: "Premium",
-                price: "25K",
-                desc: "Untuk pakaian berharga Anda",
-                features: ["Dry clean / wet clean", "Bahan delicate & formal", "Selesai 1-2 hari", "Packaging eksklusif", "Garansi kepuasan"],
-                popular: false,
-                accent: false,
-              },
-            ].map((plan, i) => (
-              <motion.div
-                key={plan.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
+                transition={{ delay: i * 0.12, duration: 0.5 }}
+                className={i === 1 ? "lg:-mt-8" : ""}
               >
                 <div
-                  className={`relative flex h-full flex-col rounded-3xl border p-8 transition-all duration-300 hover:shadow-2xl ${
-                    plan.accent
-                      ? "border-primary bg-accent text-accent-foreground shadow-xl shadow-accent/20"
-                      : "border-border/50 bg-card hover:border-primary/20 hover:shadow-primary/5"
+                  className={`relative flex flex-col rounded-3xl border p-8 transition-all duration-300 hover:shadow-2xl ${
+                    i === 1
+                      ? "border-primary bg-primary text-primary-foreground shadow-xl shadow-primary/20"
+                      : "border-accent-foreground/10 bg-accent-foreground/5 backdrop-blur-sm hover:border-primary/30"
                   }`}
                 >
-                  {plan.popular && (
-                    <div className="absolute -top-3.5 left-6">
-                      <Badge className="rounded-full bg-primary px-4 py-1 text-xs font-semibold text-primary-foreground shadow-lg">
+                  {i === 1 && (
+                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-4 py-1 text-xs font-semibold text-secondary-foreground shadow-lg">
+                        <Star className="h-3 w-3" />
                         PALING POPULER
-                      </Badge>
+                      </span>
                     </div>
                   )}
+
                   <div>
-                    <h3 className="text-lg font-semibold">{plan.name}</h3>
-                    <p className={`mt-1 text-sm ${plan.accent ? "text-accent-foreground/60" : "text-muted-foreground"}`}>
-                      {plan.desc}
+                    <h3 className="text-lg font-semibold">{pkg.name}</h3>
+                    <div className="mt-3 flex items-baseline gap-1">
+                      <span className={`text-sm ${i === 1 ? "text-primary-foreground/60" : "text-accent-foreground/50"}`}>Rp</span>
+                      <span className="text-4xl font-extrabold tabular-nums">{(pkg.modal / 1_000_000).toFixed(0)}</span>
+                      <span className={`text-sm ${i === 1 ? "text-primary-foreground/60" : "text-accent-foreground/50"}`}>Juta</span>
+                    </div>
+                    <p className={`mt-2 text-sm ${i === 1 ? "text-primary-foreground/70" : "text-accent-foreground/50"}`}>
+                      Est. {pkg.pelanggan} pelanggan/hari
                     </p>
                   </div>
-                  <div className="mt-6 flex items-baseline gap-1">
-                    <span className={`text-sm ${plan.accent ? "text-accent-foreground/50" : "text-muted-foreground"}`}>Rp</span>
-                    <span className="text-5xl font-extrabold tabular-nums">{plan.price}</span>
-                    <span className={`text-sm ${plan.accent ? "text-accent-foreground/50" : "text-muted-foreground"}`}>/kg</span>
-                  </div>
-                  <Separator className={`my-6 ${plan.accent ? "bg-accent-foreground/10" : ""}`} />
+
+                  <div className={`my-6 h-px ${i === 1 ? "bg-primary-foreground/20" : "bg-accent-foreground/10"}`} />
+
                   <ul className="flex-1 space-y-3">
-                    {plan.features.map((f) => (
+                    {pkg.features.map((f) => (
                       <li key={f} className="flex items-center gap-2.5 text-sm">
-                        <CheckCircle2 className={`h-4 w-4 shrink-0 ${plan.accent ? "text-primary" : "text-primary"}`} />
+                        <CheckCircle2 className={`h-4 w-4 shrink-0 ${i === 1 ? "text-secondary" : "text-primary"}`} />
                         {f}
                       </li>
                     ))}
                   </ul>
+
                   <Button
-                    className={`mt-8 w-full rounded-xl text-sm ${plan.accent ? "bg-primary text-primary-foreground hover:bg-primary/90" : ""}`}
-                    variant={plan.accent ? "default" : "outline"}
+                    className={`mt-8 w-full rounded-xl text-sm ${
+                      i === 1
+                        ? "bg-white text-primary hover:bg-white/90"
+                        : "border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground"
+                    }`}
+                    variant={i === 1 ? "default" : "outline"}
                     size="lg"
                     asChild
                   >
                     <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
-                      Pilih {plan.name}
+                      <Handshake className="mr-2 h-4 w-4" />
+                      Jadi Mitra {pkg.name}
                     </a>
                   </Button>
                 </div>
@@ -558,210 +691,177 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ TESTIMONIALS ═══ */}
-      <section id="testimoni" className="overflow-hidden px-6 py-28">
+      {/* ═══ GALLERY — Collage Masonry ═══ */}
+      <section id="gallery" className="px-6 py-28">
         <div className="mx-auto max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end"
           >
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Testimoni</p>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-                Yang mereka katakan.
-              </h2>
-            </div>
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="h-5 w-5 fill-primary text-primary" />
-              ))}
-              <span className="ml-2 text-sm font-semibold">4.9/5</span>
-              <span className="text-sm text-muted-foreground">(2000+ reviews)</span>
-            </div>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Gallery</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+              Lihat lebih dekat.
+            </h2>
           </motion.div>
 
-          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {testimonials.map((t, i) => (
+          <div className="mt-14 grid auto-rows-[200px] grid-cols-2 gap-4 md:grid-cols-4">
+            {galleryImages.map((img, i) => (
               <motion.div
-                key={t.name}
+                key={i}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: i * 0.08, duration: 0.5 }}
+                transition={{ delay: i * 0.06, duration: 0.5 }}
+                className={`group relative cursor-pointer overflow-hidden rounded-2xl ${
+                  img.span === "tall" ? "row-span-2" : img.span === "wide" ? "col-span-2" : ""
+                }`}
+                onClick={() => {
+                  setLightboxIndex(i);
+                  setLightboxOpen(true);
+                }}
               >
-                <div className="group h-full rounded-3xl border border-border/50 bg-card p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5">
-                  <div className="flex gap-0.5">
-                    {[...Array(t.rating)].map((_, j) => (
-                      <Star key={j} className="h-3.5 w-3.5 fill-primary text-primary" />
-                    ))}
-                  </div>
-                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                    &ldquo;{t.text}&rdquo;
-                  </p>
-                  <div className="mt-5 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 text-sm font-bold text-primary">
-                      {t.name.split(" ").map((n) => n[0]).join("")}
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold">{t.name}</p>
-                      <p className="text-xs text-muted-foreground">{t.role}</p>
-                    </div>
-                  </div>
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <p className="text-sm font-medium text-white">{img.alt}</p>
                 </div>
               </motion.div>
             ))}
           </div>
         </div>
+
+        {/* Lightbox */}
+        <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
+          <DialogContent className="max-w-4xl border-none bg-black/95 p-0">
+            <div className="relative">
+              <img
+                src={galleryImages[lightboxIndex]?.src}
+                alt={galleryImages[lightboxIndex]?.alt}
+                className="max-h-[80vh] w-full object-contain"
+              />
+              <p className="absolute bottom-4 left-4 text-sm font-medium text-white/80">
+                {galleryImages[lightboxIndex]?.alt}
+              </p>
+              <button
+                onClick={() => setLightboxIndex((p) => (p - 1 + galleryImages.length) % galleryImages.length)}
+                className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <button
+                onClick={() => setLightboxIndex((p) => (p + 1) % galleryImages.length)}
+                className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
+                aria-label="Next image"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </section>
 
-      {/* ═══ CTA BANNER ═══ */}
-      <section className="px-6 py-16">
-        <div className="mx-auto max-w-6xl">
+      {/* ═══ PERHITUNGAN ROI ═══ */}
+      <section id="roi" className="px-6 py-28">
+        <div className="mx-auto max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
-            className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary via-primary to-primary/80 px-8 py-16 text-center text-primary-foreground sm:px-16 sm:py-20"
+            className="text-center"
           >
-            {/* Decorative circles */}
-            <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-white/10 blur-2xl" />
-            <div className="pointer-events-none absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-white/10 blur-2xl" />
-            <div className="pointer-events-none absolute left-1/2 top-0 h-px w-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-
-            <h2 className="relative text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
-              Siap untuk pakaian yang
-              <br />
-              selalu bersih & wangi?
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Simulasi Investasi</p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+              Perhitungan ROI
             </h2>
-            <p className="relative mx-auto mt-4 max-w-lg text-base text-primary-foreground/80">
-              Hubungi kami sekarang dan dapatkan layanan terbaik. Gratis antar
-              jemput untuk order pertama Anda.
+            <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
+              Lihat estimasi keuntungan bisnis laundry Anda. Pilih paket dan lihat proyeksi balik modal.
             </p>
-            <div className="relative mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button
-                size="lg"
-                className="gap-2 rounded-xl bg-white px-8 text-base font-semibold text-primary shadow-xl hover:bg-white/90"
-                asChild
-              >
-                <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
-                  <MessageCircle className="h-4 w-4" />
-                  Chat WhatsApp
-                </a>
-              </Button>
-              <Button
-                size="lg"
-                variant="ghost"
-                className="gap-2 rounded-xl border border-white/20 text-base text-primary-foreground hover:bg-white/10"
-                asChild
-              >
-                <a href="tel:+6281234567890">
-                  <Phone className="h-4 w-4" />
-                  Telepon
-                </a>
-              </Button>
-            </div>
           </motion.div>
-        </div>
-      </section>
 
-      {/* ═══ CONTACT ═══ */}
-      <section id="kontak" className="px-6 py-28">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-12 lg:grid-cols-5">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6 }}
-              className="lg:col-span-2"
-            >
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Kontak</p>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-                Mari bicara.
-              </h2>
-              <p className="mt-3 text-muted-foreground">
-                Kunjungi outlet kami atau hubungi langsung untuk informasi lebih lanjut.
-              </p>
-
-              <div className="mt-10 space-y-6">
-                {[
-                  { icon: MapPin, label: "Alamat", value: "Jl. Contoh No. 123, Kota, Indonesia" },
-                  { icon: Phone, label: "Telepon", value: "+62 812-3456-7890" },
-                  { icon: Mail, label: "Email", value: "hello@shoshalaundry.com" },
-                  { icon: Clock, label: "Buka", value: "Setiap Hari, 07:00 - 21:00 WIB" },
-                ].map((item) => (
-                  <div key={item.label} className="group flex items-start gap-4">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-                      <item.icon className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{item.label}</p>
-                      <p className="mt-0.5 font-medium">{item.value}</p>
-                    </div>
-                  </div>
+          <div className="mt-12">
+            <Tabs value={selectedPackage} onValueChange={setSelectedPackage} className="w-full">
+              <TabsList className="mx-auto grid w-full max-w-md grid-cols-3">
+                {mitraPackages.map((pkg) => (
+                  <TabsTrigger key={pkg.name} value={pkg.name}>
+                    {pkg.name}
+                  </TabsTrigger>
                 ))}
-              </div>
-            </motion.div>
+              </TabsList>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: 0.1, duration: 0.6 }}
-              className="lg:col-span-3"
-            >
-              <div className="rounded-3xl border border-border/50 bg-card p-8">
-                <h3 className="text-xl font-bold">Kirim Pesan</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Atau langsung chat via WhatsApp untuk respon lebih cepat
-                </p>
-                <form className="mt-8 space-y-5" onSubmit={(e) => e.preventDefault()}>
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <div>
-                      <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground" htmlFor="name">
-                        Nama
-                      </label>
-                      <input
-                        id="name"
-                        type="text"
-                        placeholder="Nama lengkap"
-                        className="mt-2 w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground" htmlFor="phone">
-                        WhatsApp
-                      </label>
-                      <input
-                        id="phone"
-                        type="tel"
-                        placeholder="08xxxxxxxxxx"
-                        className="mt-2 w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground" htmlFor="message">
-                      Pesan
-                    </label>
-                    <textarea
-                      id="message"
-                      rows={4}
-                      placeholder="Ceritakan kebutuhan Anda..."
-                      className="mt-2 w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
-                    />
-                  </div>
-                  <Button className="w-full gap-2 rounded-xl" size="lg">
-                    <MessageCircle className="h-4 w-4" />
-                    Kirim via WhatsApp
-                  </Button>
-                </form>
-              </div>
-            </motion.div>
+              {mitraPackages.map((pkg) => {
+                const r = calculateROI(pkg);
+                return (
+                  <TabsContent key={pkg.name} value={pkg.name}>
+                    <motion.div
+                      key={pkg.name}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      {/* Info bar */}
+                      <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
+                        <span>Modal: <strong className="text-foreground">Rp {formatRupiah(pkg.modal)}</strong></span>
+                        <span>Pelanggan/hari: <strong className="text-foreground">{pkg.pelanggan}</strong></span>
+                        <span>Harga rata-rata: <strong className="text-foreground">Rp {pkg.harga.toLocaleString("id-ID")}</strong></span>
+                      </div>
+
+                      {/* Result cards */}
+                      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        {[
+                          { icon: DollarSign, label: "Pendapatan / Bulan", value: r.pendapatanBulanan, format: true },
+                          { icon: TrendingUp, label: "Keuntungan Bersih", value: r.keuntunganBersih, format: true },
+                          { icon: Calendar, label: "Balik Modal (BEP)", value: r.bepBulan, suffix: " Bulan" },
+                          { icon: Target, label: "ROI Tahunan", value: r.roiPersen, suffix: "%" },
+                        ].map((card) => (
+                          <div
+                            key={card.label}
+                            className="rounded-2xl border border-border/50 bg-card p-6 text-center transition-all hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5"
+                          >
+                            <card.icon className="mx-auto mb-3 h-6 w-6 text-primary" />
+                            <p className="text-3xl font-extrabold tabular-nums">
+                              <AnimatedNumber
+                                value={card.value}
+                                suffix={card.suffix ?? ""}
+                                prefix={card.format ? "Rp " : ""}
+                              />
+                            </p>
+                            <p className="mt-2 text-xs text-muted-foreground">{card.label}</p>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Progress bar — BEP projection */}
+                      <div className="mt-10">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">Proyeksi Balik Modal</span>
+                          <span className="font-semibold text-primary">{r.bepBulan} bulan</span>
+                        </div>
+                        <div className="mt-3 h-4 overflow-hidden rounded-full bg-muted">
+                          <motion.div
+                            key={pkg.name + "-bar"}
+                            initial={{ width: 0 }}
+                            animate={{ width: `${Math.min(100, (12 / r.bepBulan) * 100)}%` }}
+                            transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+                            className="h-full rounded-full bg-gradient-to-r from-primary to-secondary"
+                          />
+                        </div>
+                        <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+                          <span>Bulan ke-0</span>
+                          <span>Bulan ke-12</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </TabsContent>
+                );
+              })}
+            </Tabs>
           </div>
         </div>
       </section>
@@ -791,22 +891,21 @@ export default function Home() {
             </div>
 
             <div>
-              <h4 className="text-sm font-semibold uppercase tracking-wider">Layanan</h4>
+              <h4 className="text-sm font-semibold uppercase tracking-wider">Navigasi</h4>
               <ul className="mt-4 space-y-2.5 text-sm text-accent-foreground/50">
-                <li className="transition-colors hover:text-primary"><a href="#layanan">Cuci Setrika</a></li>
-                <li className="transition-colors hover:text-primary"><a href="#layanan">Dry Clean</a></li>
-                <li className="transition-colors hover:text-primary"><a href="#layanan">Express 6 Jam</a></li>
-                <li className="transition-colors hover:text-primary"><a href="#layanan">Premium Care</a></li>
+                <li className="transition-colors hover:text-primary"><a href="#tentang">Tentang Kami</a></li>
+                <li className="transition-colors hover:text-primary"><a href="#layanan">Layanan Mitra</a></li>
+                <li className="transition-colors hover:text-primary"><a href="#gallery">Gallery</a></li>
+                <li className="transition-colors hover:text-primary"><a href="#roi">Perhitungan ROI</a></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="text-sm font-semibold uppercase tracking-wider">Navigasi</h4>
+              <h4 className="text-sm font-semibold uppercase tracking-wider">Kontak</h4>
               <ul className="mt-4 space-y-2.5 text-sm text-accent-foreground/50">
-                <li className="transition-colors hover:text-primary"><a href="#beranda">Beranda</a></li>
-                <li className="transition-colors hover:text-primary"><a href="#proses">Cara Kerja</a></li>
-                <li className="transition-colors hover:text-primary"><a href="#harga">Harga</a></li>
-                <li className="transition-colors hover:text-primary"><a href="#kontak">Kontak</a></li>
+                <li className="flex items-center gap-2"><MapPin className="h-3.5 w-3.5" />Jl. Contoh No. 123, Jakarta</li>
+                <li className="flex items-center gap-2"><Phone className="h-3.5 w-3.5" />+62 812-3456-7890</li>
+                <li className="flex items-center gap-2"><Mail className="h-3.5 w-3.5" />hello@shoshalaundry.com</li>
               </ul>
             </div>
 
@@ -820,7 +919,7 @@ export default function Home() {
             </div>
           </div>
 
-          <Separator className="my-10 bg-accent-foreground/10" />
+          <div className="my-10 h-px bg-accent-foreground/10" />
 
           <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
             <p className="text-xs text-accent-foreground/40">
