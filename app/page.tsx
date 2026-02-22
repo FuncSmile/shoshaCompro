@@ -9,172 +9,54 @@ import {
   useMotionValue,
   useSpring,
   AnimatePresence,
-  type MotionValue,
 } from "framer-motion";
 import {
   Droplets,
   Clock,
   Shield,
   Sparkles,
-  MapPin,
   Phone,
   Mail,
-  Star,
   ArrowRight,
-  ArrowLeft,
   CheckCircle2,
-  Instagram,
   MessageCircle,
   Zap,
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
   Menu,
   X,
   Users,
   TrendingUp,
-  Calendar,
-  DollarSign,
-  Target,
+  BarChart3,
+  Eye,
+  Wrench,
+  Headphones,
+  Timer,
+  CreditCard,
+  Truck,
+  Gift,
   Award,
   Building2,
+  Target,
+  Calendar,
+  MapPin,
+  Download,
+  Send,
+  Instagram,
+  ChevronUp,
+  HelpCircle,
+  Star,
+  Quote,
+  Play,
+  CircleDot,
+  Rocket,
+  FileText,
   Handshake,
+  LineChart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
 
 /* ═══════════════════════════════════════════
-   DATA ARRAYS — edit these to update content
-   ═══════════════════════════════════════════ */
-
-const heroSlides = [
-  {
-    image: "https://picsum.photos/id/517/1920/1080",
-    tagline: "Bersih Sempurna,\nSetiap Helai.",
-    subtitle: "Layanan laundry profesional dengan standar premium untuk pakaian Anda.",
-  },
-  {
-    image: "https://picsum.photos/id/525/1920/1080",
-    tagline: "Mitra Bisnis\nTerpercaya.",
-    subtitle: "Bergabung dengan jaringan franchise laundry terbesar di Indonesia.",
-  },
-  {
-    image: "https://picsum.photos/id/534/1920/1080",
-    tagline: "Teknologi Modern,\nHasil Maksimal.",
-    subtitle: "Mesin cuci industri terkini dengan deterjen ramah lingkungan.",
-  },
-];
-
-const companyTimeline = [
-  { year: "2019", title: "Didirikan", desc: "SHO SHA LAUNDRY berdiri dengan 1 outlet pertama di Jakarta." },
-  { year: "2020", title: "Ekspansi Digital", desc: "Meluncurkan sistem order online dan layanan antar-jemput." },
-  { year: "2021", title: "10 Outlet", desc: "Membuka cabang ke-10 dan memulai program kemitraan." },
-  { year: "2022", title: "Program Franchise", desc: "Resmi meluncurkan 3 paket franchise untuk mitra baru." },
-  { year: "2023", title: "50+ Mitra", desc: "Jaringan mitra tersebar di Jabodetabek dan kota-kota besar." },
-  { year: "2024", title: "Award Winner", desc: "Meraih penghargaan Best Laundry Franchise Indonesia." },
-];
-
-const mitraPackages = [
-  {
-    name: "Silver",
-    modal: 15_000_000,
-    pelanggan: 30,
-    harga: 7_000,
-    features: [
-      "1 mesin cuci 8kg",
-      "1 mesin pengering",
-      "Perlengkapan dasar",
-      "Training 3 hari",
-      "Branding outlet",
-    ],
-  },
-  {
-    name: "Gold",
-    modal: 30_000_000,
-    pelanggan: 60,
-    harga: 7_000,
-    features: [
-      "2 mesin cuci 12kg",
-      "2 mesin pengering",
-      "Perlengkapan lengkap",
-      "Training 7 hari",
-      "Branding outlet premium",
-      "Sistem POS digital",
-      "Support marketing 3 bulan",
-    ],
-  },
-  {
-    name: "Platinum",
-    modal: 60_000_000,
-    pelanggan: 120,
-    harga: 7_000,
-    features: [
-      "4 mesin cuci 15kg",
-      "3 mesin pengering",
-      "Full perlengkapan + AC",
-      "Training 14 hari",
-      "Full branding + interior",
-      "Sistem POS + CRM",
-      "Support marketing 6 bulan",
-      "Konsultasi bisnis 1 tahun",
-    ],
-  },
-];
-
-const galleryImages = [
-  { src: "https://picsum.photos/id/395/600/400", alt: "Outlet modern SHO SHA", span: "tall" as const },
-  { src: "https://picsum.photos/id/401/600/400", alt: "Mesin cuci industri", span: "normal" as const },
-  { src: "https://picsum.photos/id/403/600/400", alt: "Tim profesional", span: "wide" as const },
-  { src: "https://picsum.photos/id/399/600/400", alt: "Hasil cucian rapi", span: "normal" as const },
-  { src: "https://picsum.photos/id/411/600/400", alt: "Proses quality control", span: "tall" as const },
-  { src: "https://picsum.photos/id/416/600/400", alt: "Area packing premium", span: "normal" as const },
-  { src: "https://picsum.photos/id/431/600/400", alt: "Interior outlet bersih", span: "wide" as const },
-  { src: "https://picsum.photos/id/435/600/400", alt: "Layanan antar jemput", span: "normal" as const },
-];
-
-const marqueeWords = [
-  "BERSIH", "WANGI", "CEPAT", "PROFESIONAL", "TERPERCAYA", "PREMIUM",
-  "HIGIENIS", "RAPI", "BERKUALITAS", "MODERN",
-];
-
-const navLinks = [
-  { label: "Tentang Kami", href: "#tentang" },
-  { label: "Layanan", href: "#layanan" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "Perhitungan ROI", href: "#roi" },
-];
-
-/* ═══════════════════════════════════════════
-   HELPER FUNCTIONS
-   ═══════════════════════════════════════════ */
-
-function formatRupiah(amount: number): string {
-  if (amount >= 1_000_000_000) return `${(amount / 1_000_000_000).toFixed(1)} Miliar`;
-  if (amount >= 1_000_000) return `${(amount / 1_000_000).toFixed(1)} Juta`;
-  if (amount >= 1_000) return `${(amount / 1_000).toFixed(0)} Ribu`;
-  return amount.toString();
-}
-
-function calculateROI(pkg: typeof mitraPackages[number]) {
-  const pendapatanBulanan = pkg.pelanggan * pkg.harga * 26;
-  const biayaOperasional = pendapatanBulanan * 0.4;
-  const keuntunganBersih = pendapatanBulanan - biayaOperasional;
-  const bepBulan = Math.ceil(pkg.modal / keuntunganBersih);
-  const roiPersen = Math.round((keuntunganBersih * 12 / pkg.modal) * 100);
-  return { pendapatanBulanan, keuntunganBersih, bepBulan, roiPersen };
-}
-
-/* ═══════════════════════════════════════════
-   COMPONENTS
+   ANIMATED COUNTER
    ═══════════════════════════════════════════ */
 
 function AnimatedNumber({
@@ -197,18 +79,38 @@ function AnimatedNumber({
 
   useEffect(() => {
     const unsub = spring.on("change", (v) => {
-      if (ref.current) ref.current.textContent = prefix + Math.round(v).toLocaleString("id-ID") + suffix;
+      if (ref.current)
+        ref.current.textContent =
+          prefix + Math.round(v).toLocaleString("id-ID") + suffix;
     });
     return unsub;
   }, [spring, suffix, prefix]);
 
-  return <span ref={ref}>{prefix}0{suffix}</span>;
+  return (
+    <span ref={ref}>
+      {prefix}0{suffix}
+    </span>
+  );
 }
 
-function Marquee({ children, reverse = false }: { children: React.ReactNode; reverse?: boolean }) {
+/* ═══════════════════════════════════════════
+   MARQUEE
+   ═══════════════════════════════════════════ */
+
+function Marquee({
+  children,
+  reverse = false,
+}: {
+  children: React.ReactNode;
+  reverse?: boolean;
+}) {
   return (
     <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-      <div className={`flex shrink-0 gap-6 py-4 ${reverse ? "animate-marquee-reverse" : "animate-marquee"}`}>
+      <div
+        className={`flex shrink-0 gap-8 py-4 ${
+          reverse ? "animate-marquee-reverse" : "animate-marquee"
+        }`}
+      >
         {children}
         {children}
       </div>
@@ -217,25 +119,277 @@ function Marquee({ children, reverse = false }: { children: React.ReactNode; rev
 }
 
 /* ═══════════════════════════════════════════
+   SECTION WRAPPER WITH FADE-IN
+   ═══════════════════════════════════════════ */
+
+function FadeIn({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.6, delay }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   DATA
+   ═══════════════════════════════════════════ */
+
+const navLinks = [
+  { label: "Beranda", href: "#beranda" },
+  { label: "Keunggulan", href: "#keunggulan" },
+  { label: "Tentang", href: "#tentang" },
+  { label: "Layanan", href: "#layanan" },
+  { label: "FAQ", href: "#faq" },
+  { label: "Kontak", href: "#kontak" },
+];
+
+const highlights = [
+  {
+    icon: Shield,
+    title: "Bisnis Teruji 15+ Tahun",
+    desc: "Pengalaman panjang dalam industri laundry dengan track record proven.",
+  },
+  {
+    icon: Zap,
+    title: "Sistem Autopilot",
+    desc: "100% dikelola manajemen profesional. Investor pasif, profit aktif.",
+  },
+  {
+    icon: Eye,
+    title: "Transparansi 24/7",
+    desc: "Dashboard real-time untuk monitoring omzet, profit, dan operasional.",
+  },
+];
+
+const investmentCards = [
+  {
+    icon: TrendingUp,
+    title: "ROI hingga 65%",
+    desc: "Return on Investment hingga 65% per tahun dari modal investasi Anda.",
+  },
+  {
+    icon: Calendar,
+    title: "Payback 19 Bulan",
+    desc: "Payback period cepat hanya dalam 19 bulan untuk balik modal penuh.",
+  },
+  {
+    icon: Wrench,
+    title: "Support Teknis Mandiri",
+    desc: "Tim teknisi berpengalaman siap menangani seluruh kebutuhan teknis.",
+  },
+  {
+    icon: Users,
+    title: "Manajemen Profesional",
+    desc: "Pengelolaan operasional oleh tim manajemen yang terlatih dan berdedikasi.",
+  },
+  {
+    icon: Headphones,
+    title: "Tim Teknisi 24 Jam",
+    desc: "Layanan darurat dan pemeliharaan rutin tersedia 24 jam nonstop.",
+  },
+  {
+    icon: BarChart3,
+    title: "Dashboard Real-Time",
+    desc: "Pantau performa bisnis kapan saja dari mana saja melalui dashboard digital.",
+  },
+];
+
+const timeline = [
+  {
+    year: "2010",
+    title: "Berdiri",
+    desc: "SHO-SHA LAUNDRY didirikan dengan 1 outlet pertama.",
+  },
+  {
+    year: "2015",
+    title: "Ekspansi",
+    desc: "Berkembang menjadi 5 outlet di Jakarta.",
+  },
+  {
+    year: "2020",
+    title: "Sistem Investor",
+    desc: "Meluncurkan sistem kemitraan investor autopilot.",
+  },
+  {
+    year: "2025",
+    title: "12+ Outlet",
+    desc: "Beroperasi di berbagai lokasi strategis.",
+  },
+];
+
+const teamMembers = [
+  {
+    name: "Anton Agusta",
+    role: "Founder & CEO",
+    desc: "15+ tahun pengalaman di industri laundry dan sistem manajemen operasional.",
+    initials: "AA",
+  },
+  {
+    name: "Yesi Elfira",
+    role: "COO",
+    desc: "Ahli operasional dan quality control dengan track record membangun 10+ outlet.",
+    initials: "YE",
+  },
+  {
+    name: "Riyanti",
+    role: "CFO",
+    desc: "Spesialis keuangan dan analisa investasi untuk memastikan ROI optimal.",
+    initials: "RI",
+  },
+];
+
+const services = [
+  {
+    icon: Sparkles,
+    title: "Self-Service Laundry",
+    features: [
+      "Mesin cuci LG 20kg premium",
+      "Operasional 24 jam nonstop",
+      "Sistem pembayaran QRIS TORU",
+      "Mulai Rp 8.000/kg",
+    ],
+  },
+  {
+    icon: Droplets,
+    title: "Drop-Off Laundry",
+    features: [
+      "Cuci, kering, lipat rapi",
+      "Pewangi premium gratis",
+      "Antar-jemput tersedia",
+      "Rp 7.000/kg (min 3kg)",
+    ],
+  },
+  {
+    icon: CreditCard,
+    title: "Membership TORU",
+    features: [
+      "Top-up saldo digital",
+      "Diskon 10–20%",
+      "Akumulasi poin reward",
+      "Gratis pendaftaran",
+    ],
+  },
+];
+
+const marqueeWords = [
+  "AUTOPILOT",
+  "PASSIVE INCOME",
+  "ROI 65%",
+  "15+ TAHUN",
+  "TRANSPARAN",
+  "PROFESIONAL",
+  "24/7 MONITORING",
+  "PROVEN SYSTEM",
+];
+
+const investorJourney = [
+  {
+    step: "01",
+    icon: FileText,
+    title: "Konsultasi & Proposal",
+    desc: "Diskusi kebutuhan investasi dan terima proposal lengkap dengan proyeksi ROI.",
+  },
+  {
+    step: "02",
+    icon: Handshake,
+    title: "Tanda Tangan MoU",
+    desc: "Sepakati perjanjian kerja sama dan lakukan pembayaran investasi.",
+  },
+  {
+    step: "03",
+    icon: Building2,
+    title: "Setup Outlet",
+    desc: "Tim kami siapkan outlet lengkap: mesin, interior, branding, dan rekrutmen staff.",
+  },
+  {
+    step: "04",
+    icon: LineChart,
+    title: "Monitoring & Profit",
+    desc: "Outlet beroperasi autopilot. Pantau profit via dashboard dan terima dividen bulanan.",
+  },
+];
+
+const investorTestimonials = [
+  {
+    name: "Hendra Wijaya",
+    role: "Investor sejak 2021",
+    text: "ROI 60% di tahun pertama. Saya tidak perlu turun tangan sama sekali — tim SHO-SHA mengelola semuanya dengan sangat profesional.",
+    rating: 5,
+  },
+  {
+    name: "Sari Indrawati",
+    role: "Investor sejak 2022",
+    text: "Dashboard real-time-nya luar biasa transparan. Saya bisa pantau omzet harian dari HP. Balik modal dalam 17 bulan!",
+    rating: 5,
+  },
+  {
+    name: "Bambang Sutrisno",
+    role: "Investor sejak 2020",
+    text: "Sudah punya 3 outlet SHO-SHA. Passive income yang konsisten setiap bulan. Sistem autopilot-nya benar-benar works.",
+    rating: 5,
+  },
+];
+
+const faqItems = [
+  {
+    q: "Berapa modal minimum untuk berinvestasi?",
+    a: "Modal investasi mulai dari Rp 150 juta untuk satu outlet laundry lengkap termasuk mesin, interior, branding, dan biaya operasional 3 bulan pertama. Kami juga menyediakan opsi cicilan melalui mitra perbankan.",
+  },
+  {
+    q: "Apakah saya perlu mengelola outlet sendiri?",
+    a: "Tidak. SHO-SHA menggunakan sistem autopilot — seluruh operasional dikelola oleh tim manajemen profesional kami. Anda sebagai investor hanya perlu memantau performa melalui dashboard real-time.",
+  },
+  {
+    q: "Berapa estimasi ROI dan payback period?",
+    a: "ROI rata-rata mencapai 65% per tahun dengan payback period sekitar 19 bulan. Angka ini berdasarkan data aktual dari outlet-outlet yang sudah beroperasi.",
+  },
+  {
+    q: "Bagaimana sistem pembagian keuntungan?",
+    a: "Keuntungan bersih dibagi sesuai perjanjian MoU. Laporan keuangan diberikan setiap bulan secara transparan melalui dashboard digital dan laporan tertulis.",
+  },
+  {
+    q: "Apakah ada jaminan jika bisnis tidak berjalan?",
+    a: "Kami memberikan garansi dukungan operasional penuh dan buyback guarantee sesuai ketentuan dalam MoU. Dengan track record 15+ tahun, kami memastikan setiap outlet dikelola untuk sukses.",
+  },
+  {
+    q: "Di mana lokasi outlet yang tersedia?",
+    a: "Kami memiliki tim riset lokasi yang menganalisis traffic, demografi, dan potensi pasar. Saat ini tersedia di area Jabodetabek dan beberapa kota besar di Indonesia. Lokasi baru terus dibuka.",
+  },
+  {
+    q: "Apa yang membedakan SHO-SHA dari franchise laundry lain?",
+    a: "Sistem full-autopilot, dashboard monitoring 24/7, tim teknisi siaga, dan track record 15+ tahun yang proven. Investor benar-benar pasif — tidak perlu terlibat operasional sama sekali.",
+  },
+];
+
+const trustedLogos = [
+  "LG Electronics",
+  "QRIS",
+  "Bank BCA",
+  "Grab",
+  "Gojek",
+  "OVO",
+];
+
+/* ═══════════════════════════════════════════
    MAIN PAGE
    ═══════════════════════════════════════════ */
 
 export default function Home() {
-  /* ── Hero carousel state ── */
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const slideCount = heroSlides.length;
-
-  const nextSlide = useCallback(() => setCurrentSlide((p) => (p + 1) % slideCount), [slideCount]);
-  const prevSlide = useCallback(() => setCurrentSlide((p) => (p - 1 + slideCount) % slideCount), [slideCount]);
-
-  useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(nextSlide, 5000);
-    return () => clearInterval(timer);
-  }, [isPaused, nextSlide]);
-
-  /* ── Navbar scroll state ── */
+  /* Navbar state */
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -245,27 +399,24 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  /* ── Hero parallax ── */
+  /* FAQ accordion */
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const toggleFaq = useCallback((i: number) => {
+    setOpenFaq((prev) => (prev === i ? null : i));
+  }, []);
+
+  /* Hero parallax */
   const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 120]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
-  /* ── About show more ── */
-  const [showMoreAbout, setShowMoreAbout] = useState(false);
-
-  /* ── Gallery lightbox ── */
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxIndex, setLightboxIndex] = useState(0);
-
-  /* ── ROI calculator ── */
-  const [selectedPackage, setSelectedPackage] = useState("Silver");
-  const currentPkg = mitraPackages.find((p) => p.name === selectedPackage) ?? mitraPackages[0];
-  const roi = calculateROI(currentPkg);
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      {/* ═══ NAVBAR — floating glassmorphism ═══ */}
+      {/* ═══ NAVBAR ═══ */}
       <nav className="fixed top-0 z-50 w-full">
         <div className="mx-auto max-w-7xl px-6">
           <div
@@ -277,10 +428,11 @@ export default function Home() {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/80">
                 <Droplets className="h-4 w-4 text-primary-foreground" />
               </div>
-              <span className="text-base font-bold tracking-tight">SHO SHA</span>
+              <span className="text-base font-bold tracking-tight">
+                SHO-SHA
+              </span>
             </a>
 
-            {/* Desktop nav */}
             <div className="hidden items-center gap-7 md:flex">
               {navLinks.map((item) => (
                 <a
@@ -294,172 +446,227 @@ export default function Home() {
             </div>
 
             <div className="flex items-center gap-3">
-              <Button size="sm" className="hidden rounded-xl text-xs sm:inline-flex" asChild>
-                <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+              <Button
+                size="sm"
+                className="hidden rounded-xl text-xs sm:inline-flex"
+                asChild
+              >
+                <a
+                  href="https://wa.me/6281234567890"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
-                  WhatsApp
+                  Konsultasi
                 </a>
               </Button>
-
-              {/* Mobile hamburger */}
               <button
                 className="flex h-9 w-9 items-center justify-center rounded-xl md:hidden"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Toggle menu"
               >
-                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                {mobileMenuOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
               </button>
             </div>
           </div>
 
-          {/* Mobile menu slide-down */}
-          <AnimatePresence>
-            {mobileMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="overflow-hidden md:hidden"
-              >
-                <div className="mt-2 flex flex-col gap-1 rounded-2xl border border-border/50 bg-background/95 p-4 backdrop-blur-xl">
-                  {navLinks.map((item) => (
-                    <a
-                      key={item.label}
-                      href={item.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                    >
-                      {item.label}
-                    </a>
-                  ))}
-                  <Button size="sm" className="mt-2 rounded-xl text-xs" asChild>
-                    <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
-                      <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
-                      WhatsApp
-                    </a>
-                  </Button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Mobile menu */}
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              className="overflow-hidden md:hidden"
+            >
+              <div className="mt-2 flex flex-col gap-1 rounded-2xl border border-border/50 bg-background/95 p-4 backdrop-blur-xl">
+                {navLinks.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+                <Button size="sm" className="mt-2 rounded-xl text-xs" asChild>
+                  <a
+                    href="https://wa.me/6281234567890"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
+                    Konsultasi
+                  </a>
+                </Button>
+              </div>
+            </motion.div>
+          )}
         </div>
       </nav>
 
-      {/* ═══ HERO — Interactive Carousel ═══ */}
+      {/* ═══ HERO SECTION ═══ */}
       <section
         ref={heroRef}
         id="beranda"
-        className="relative min-h-[100dvh] overflow-hidden"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
+        className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-6"
       >
-        {/* Background slides */}
-        <AnimatePresence mode="wait">
+        {/* Animated gradient orbs */}
+        <div className="pointer-events-none absolute inset-0">
           <motion.div
-            key={currentSlide}
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="absolute inset-0"
+            animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -left-32 top-20 h-[600px] w-[600px] rounded-full bg-primary/10 blur-[120px]"
+          />
+          <motion.div
+            animate={{ x: [0, -20, 0], y: [0, 30, 0] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -right-32 bottom-20 h-[500px] w-[500px] rounded-full bg-accent/8 blur-[120px]"
+          />
+          <motion.div
+            animate={{ scale: [1, 1.1, 1] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-secondary/8 blur-[100px]"
+          />
+        </div>
+
+        {/* Grid pattern */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
+
+        <motion.div
+          style={{ y: heroY, opacity: heroOpacity }}
+          className="relative z-10 mx-auto max-w-5xl text-center"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            <motion.div style={{ y: heroY }} className="absolute inset-0">
-              <img
-                src={heroSlides[currentSlide].image}
-                alt={heroSlides[currentSlide].tagline}
-                className="h-full w-full object-cover"
-              />
-            </motion.div>
+            <span className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2 text-sm font-medium text-primary">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+              </span>
+              Peluang Investasi Terbuka
+            </span>
           </motion.div>
-        </AnimatePresence>
 
-        {/* Dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.6 }}
+            className="text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
+          >
+            Bangun Passive Income dari
+            <br />
+            <span className="bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent">
+              Bisnis Laundry Autopilot
+            </span>
+          </motion.h1>
 
-        {/* Content */}
-        <motion.div style={{ opacity: heroOpacity }} className="relative z-10 flex min-h-[100dvh] items-center px-6">
-          <div className="mx-auto max-w-5xl">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentSlide}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -30 }}
-                transition={{ duration: 0.6 }}
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl"
+          >
+            100% dikelola manajemen profesional.{" "}
+            <span className="font-medium text-foreground">
+              Investor pasif, profit aktif.
+            </span>
+          </motion.p>
+
+          {/* 3 Highlights */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35, duration: 0.6 }}
+            className="mx-auto mt-12 grid max-w-3xl gap-4 sm:grid-cols-3"
+          >
+            {highlights.map((h) => (
+              <div
+                key={h.title}
+                className="group rounded-2xl border border-border/50 bg-card/50 p-5 text-left backdrop-blur-sm transition-all duration-300 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5"
               >
-                <h1 className="whitespace-pre-line text-5xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
-                  {heroSlides[currentSlide].tagline}
-                </h1>
-                <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70 sm:text-xl">
-                  {heroSlides[currentSlide].subtitle}
+                <h.icon className="mb-3 h-6 w-6 text-primary transition-transform duration-300 group-hover:scale-110" />
+                <h3 className="text-sm font-bold">{h.title}</h3>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                  {h.desc}
                 </p>
-              </motion.div>
-            </AnimatePresence>
+              </div>
+            ))}
+          </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              className="mt-10 flex flex-col items-start gap-4 sm:flex-row"
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45, duration: 0.6 }}
+            className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+          >
+            <Button
+              size="lg"
+              className="group gap-2 rounded-xl px-8 text-base"
+              asChild
             >
-              <Button size="lg" className="group gap-2 rounded-xl px-8 text-base" asChild>
-                <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
-                  Hubungi Kami
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </a>
-              </Button>
-              <Button
-                size="lg"
-                variant="ghost"
-                className="gap-2 rounded-xl border border-white/20 text-base text-white hover:bg-white/10"
-                asChild
+              <a
+                href="https://wa.me/6281234567890"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <a href="#tentang">
-                  Pelajari Lebih Lanjut
-                  <ChevronDown className="h-4 w-4" />
-                </a>
-              </Button>
-            </motion.div>
-          </div>
+                Investasi Sekarang
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </a>
+            </Button>
+            <Button
+              size="lg"
+              variant="ghost"
+              className="gap-2 rounded-xl text-base text-muted-foreground"
+              asChild
+            >
+              <a href="#keunggulan">
+                Pelajari Lebih Lanjut
+                <ChevronDown className="h-4 w-4" />
+              </a>
+            </Button>
+          </motion.div>
         </motion.div>
 
-        {/* Navigation arrows */}
-        <button
-          onClick={prevSlide}
-          className="absolute left-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20 sm:left-8"
-          aria-label="Previous slide"
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 0.5 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
         >
-          <ChevronLeft className="h-6 w-6" />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute right-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20 sm:right-8"
-          aria-label="Next slide"
-        >
-          <ChevronRight className="h-6 w-6" />
-        </button>
-
-        {/* Dots navigation */}
-        <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-2">
-          {heroSlides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentSlide(i)}
-              aria-label={`Go to slide ${i + 1}`}
-              className={`h-2 rounded-full transition-all duration-500 ${
-                i === currentSlide ? "w-8 bg-white" : "w-2 bg-white/40"
-              }`}
-            />
-          ))}
-        </div>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            className="flex h-10 w-6 items-start justify-center rounded-full border-2 border-muted-foreground/30 p-1.5"
+          >
+            <motion.div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/50" />
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* ═══ MARQUEE STRIP ═══ */}
-      <div className="bg-accent py-5">
+      <div className="border-y border-border/50 bg-accent py-5">
         <Marquee>
           {marqueeWords.map((word) => (
-            <span key={word} className="flex items-center gap-6 text-sm font-bold tracking-[0.2em] text-accent-foreground/70">
+            <span
+              key={word}
+              className="flex items-center gap-8 text-sm font-bold tracking-[0.2em] text-accent-foreground/70"
+            >
               {word}
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
             </span>
@@ -467,401 +674,621 @@ export default function Home() {
         </Marquee>
       </div>
 
-      {/* ═══ TENTANG KAMI ═══ */}
-      <section id="tentang" className="px-6 py-28">
+      {/* ═══ KEUNGGULAN INVESTASI ═══ */}
+      <section id="keunggulan" className="px-6 py-28">
         <div className="mx-auto max-w-6xl">
-          <div className="grid gap-16 lg:grid-cols-2">
-            {/* Left — visual stats */}
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6 }}
-              className="relative"
-            >
-              <div className="grid grid-cols-2 gap-4">
-                <div className="rounded-3xl bg-gradient-to-br from-primary to-primary/80 p-6 text-primary-foreground">
-                  <Shield className="mb-3 h-8 w-8" />
-                  <p className="text-4xl font-extrabold">
-                    <AnimatedNumber value={5} suffix="+" />
-                  </p>
-                  <p className="mt-1 text-sm text-primary-foreground/70">Tahun Pengalaman</p>
-                </div>
-                <div className="rounded-3xl border border-border/50 bg-card p-6">
-                  <Users className="mb-3 h-8 w-8 text-primary" />
-                  <p className="text-4xl font-extrabold">
-                    <AnimatedNumber value={2000} suffix="+" />
-                  </p>
-                  <p className="mt-1 text-sm text-muted-foreground">Pelanggan Puas</p>
-                </div>
-                <div className="rounded-3xl border border-border/50 bg-card p-6">
-                  <Building2 className="mb-3 h-8 w-8 text-primary" />
-                  <p className="text-4xl font-extrabold">
-                    <AnimatedNumber value={50} suffix="+" />
-                  </p>
-                  <p className="mt-1 text-sm text-muted-foreground">Outlet Mitra</p>
-                </div>
-                <div className="rounded-3xl bg-accent p-6 text-accent-foreground">
-                  <Zap className="mb-3 h-8 w-8" />
-                  <p className="text-4xl font-extrabold">
-                    <AnimatedNumber value={98} suffix="%" />
-                  </p>
-                  <p className="mt-1 text-sm text-accent-foreground/70">Repeat Order</p>
-                </div>
-              </div>
-            </motion.div>
+          <FadeIn className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+              Keunggulan
+            </p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+              ROI Cepat &{" "}
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Aman
+              </span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
+              Investasi laundry autopilot dengan keuntungan maksimal dan risiko
+              minimal. Dikelola profesional, dipantau transparan.
+            </p>
+          </FadeIn>
 
-            {/* Right — company story */}
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6 }}
-            >
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Tentang Kami</p>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-                Lebih dari sekadar{" "}
-                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  laundry.
-                </span>
-              </h2>
-              <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-                SHO SHA LAUNDRY didirikan pada tahun 2019 dengan misi sederhana: memberikan
-                layanan laundry terbaik dengan harga terjangkau. Kami percaya bahwa pakaian
-                bersih dan wangi adalah hak semua orang.
+          {/* Stats bar */}
+          <FadeIn delay={0.15}>
+            <div className="mx-auto mt-12 flex max-w-3xl flex-wrap items-center justify-center gap-8 rounded-2xl border border-border/50 bg-card p-6 sm:gap-12">
+              {[
+                { value: 65, suffix: "%", label: "ROI / Tahun" },
+                { value: 19, suffix: " Bln", label: "Payback Period" },
+                { value: 12, suffix: "+", label: "Outlet Aktif" },
+                { value: 15, suffix: "+", label: "Tahun Pengalaman" },
+              ].map((s) => (
+                <div key={s.label} className="text-center">
+                  <p className="text-3xl font-extrabold tabular-nums text-primary sm:text-4xl">
+                    <AnimatedNumber value={s.value} suffix={s.suffix} />
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {s.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </FadeIn>
+
+          {/* Cards */}
+          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {investmentCards.map((card, i) => (
+              <FadeIn key={card.title} delay={i * 0.08}>
+                <div className="group h-full rounded-3xl border border-border/50 bg-card p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5">
+                  <div className="mb-4 inline-flex rounded-2xl bg-primary/10 p-3 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
+                    <card.icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="text-lg font-bold">{card.title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {card.desc}
+                  </p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ TENTANG KAMI ═══ */}
+      <section
+        id="tentang"
+        className="relative overflow-hidden bg-accent px-6 py-28 text-accent-foreground"
+      >
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
+          <span className="select-none text-[18vw] font-black leading-none tracking-tighter text-accent-foreground/[0.03]">
+            SHO-SHA
+          </span>
+        </div>
+
+        <div className="relative mx-auto max-w-6xl">
+          {/* Visi & Misi */}
+          <div className="grid gap-12 lg:grid-cols-2">
+            <FadeIn>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                Tentang Kami
               </p>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+                Visi Kami
+              </h2>
+              <p className="mt-6 text-lg leading-relaxed text-accent-foreground/70">
+                Menjadi jaringan laundry terkemuka di Indonesia dengan sistem
+                autopilot yang memberikan{" "}
+                <span className="font-semibold text-accent-foreground">
+                  passive income berkelanjutan
+                </span>{" "}
+                bagi investor dan layanan terbaik bagi pelanggan.
+              </p>
+            </FadeIn>
 
-              <AnimatePresence>
-                {showMoreAbout && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="overflow-hidden"
-                  >
-                    <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-                      Dengan tim profesional dan mesin berteknologi tinggi, kami melayani ribuan
-                      pelanggan setiap bulannya. Kini, SHO SHA telah berkembang menjadi jaringan
-                      franchise dengan 50+ mitra di seluruh Indonesia. Kami terus berinovasi
-                      untuk memberikan pengalaman laundry terbaik — dari proses pencucian hingga
-                      pengantaran ke pintu rumah Anda.
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              <button
-                onClick={() => setShowMoreAbout(!showMoreAbout)}
-                className="mt-4 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
-              >
-                {showMoreAbout ? "Tampilkan Lebih Sedikit" : "Baca Selengkapnya"}
-              </button>
-            </motion.div>
+            <FadeIn delay={0.1}>
+              <div className="flex h-full flex-col justify-center">
+                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+                  Misi Kami
+                </h2>
+                <p className="mt-6 text-lg leading-relaxed text-accent-foreground/70">
+                  Memberikan solusi investasi bisnis laundry yang{" "}
+                  <span className="font-semibold text-accent-foreground">
+                    menguntungkan, transparan, dan mudah dikelola
+                  </span>{" "}
+                  dengan dukungan operasional penuh dari tim profesional kami.
+                </p>
+              </div>
+            </FadeIn>
           </div>
 
           {/* Timeline */}
-          <div className="mt-24">
-            <h3 className="mb-12 text-center text-2xl font-bold">Perjalanan Kami</h3>
-            <div className="relative">
+          <div className="mt-28">
+            <FadeIn className="text-center">
+              <h3 className="text-2xl font-bold sm:text-3xl">
+                Perjalanan Kami
+              </h3>
+              <p className="mt-2 text-accent-foreground/60">
+                15+ tahun membangun kepercayaan dan kesuksesan bersama
+              </p>
+            </FadeIn>
+
+            <div className="relative mt-16">
               {/* Center line */}
-              <div className="absolute left-4 top-0 h-full w-px bg-border md:left-1/2 md:-translate-x-px" />
+              <div className="absolute left-4 top-0 h-full w-px bg-accent-foreground/10 md:left-1/2 md:-translate-x-px" />
 
-              {companyTimeline.map((item, i) => (
-                <motion.div
-                  key={item.year}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ delay: i * 0.1, duration: 0.5 }}
-                  className={`relative mb-10 flex items-start gap-8 pl-12 md:pl-0 ${
-                    i % 2 === 0 ? "md:flex-row md:text-right" : "md:flex-row-reverse md:text-left"
-                  }`}
-                >
-                  {/* Dot */}
-                  <div className="absolute left-2.5 top-1 h-3 w-3 rounded-full border-2 border-primary bg-background md:left-1/2 md:-translate-x-1.5" />
+              {timeline.map((item, i) => (
+                <FadeIn key={item.year} delay={i * 0.1}>
+                  <div
+                    className={`relative mb-12 flex items-start gap-8 pl-12 md:pl-0 ${
+                      i % 2 === 0
+                        ? "md:flex-row md:text-right"
+                        : "md:flex-row-reverse md:text-left"
+                    }`}
+                  >
+                    {/* Dot */}
+                    <div className="absolute left-2 top-1 h-4 w-4 rounded-full border-[3px] border-primary bg-accent md:left-1/2 md:-translate-x-2" />
 
-                  <div className={`flex-1 ${i % 2 === 0 ? "md:pr-16" : "md:pl-16"}`}>
-                    <span className="text-sm font-bold text-primary">{item.year}</span>
-                    <h4 className="mt-1 text-lg font-bold">{item.title}</h4>
-                    <p className="mt-1 text-sm text-muted-foreground">{item.desc}</p>
+                    <div
+                      className={`flex-1 ${
+                        i % 2 === 0 ? "md:pr-16" : "md:pl-16"
+                      }`}
+                    >
+                      <span className="inline-flex rounded-full bg-primary/10 px-3 py-1 text-sm font-bold text-primary">
+                        {item.year}
+                      </span>
+                      <h4 className="mt-2 text-xl font-bold">{item.title}</h4>
+                      <p className="mt-1 text-sm text-accent-foreground/60">
+                        {item.desc}
+                      </p>
+                    </div>
+                    <div className="hidden flex-1 md:block" />
                   </div>
-                  <div className="hidden flex-1 md:block" />
-                </motion.div>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+
+          {/* Tim Kami */}
+          <div className="mt-28">
+            <FadeIn className="text-center">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                Tim Kami
+              </p>
+              <h3 className="mt-3 text-2xl font-bold sm:text-3xl">
+                Dikelola oleh Profesional
+              </h3>
+            </FadeIn>
+
+            <div className="mt-14 grid gap-6 sm:grid-cols-3">
+              {teamMembers.map((member, i) => (
+                <FadeIn key={member.name} delay={i * 0.1}>
+                  <div className="group rounded-3xl border border-accent-foreground/10 bg-accent-foreground/5 p-8 text-center backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:bg-accent-foreground/10">
+                    {/* Avatar placeholder */}
+                    <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 text-2xl font-bold text-primary transition-all duration-300 group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground">
+                      {member.initials}
+                    </div>
+                    <h4 className="mt-5 text-lg font-bold">{member.name}</h4>
+                    <p className="mt-1 text-sm font-medium text-primary">
+                      {member.role}
+                    </p>
+                    <p className="mt-3 text-sm leading-relaxed text-accent-foreground/60">
+                      {member.desc}
+                    </p>
+                  </div>
+                </FadeIn>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ═══ LAYANAN — Paket Mitra ═══ */}
-      <section id="layanan" className="relative overflow-hidden bg-accent px-6 py-28 text-accent-foreground">
-        {/* Ghost background text */}
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
-          <span className="select-none text-[20vw] font-black leading-none tracking-tighter text-accent-foreground/[0.03]">
-            MITRA
-          </span>
-        </div>
-
-        <div className="relative mx-auto max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Kemitraan</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Pilih Paket Mitra Anda
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-accent-foreground/60">
-              Mulai bisnis laundry Anda bersama SHO SHA. Tiga paket investasi dengan dukungan penuh dari kami.
+      {/* ═══ LAYANAN ═══ */}
+      <section id="layanan" className="px-6 py-28">
+        <div className="mx-auto max-w-6xl">
+          <FadeIn className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+              Layanan
             </p>
-          </motion.div>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+              Solusi Laundry{" "}
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Lengkap
+              </span>
+            </h2>
+          </FadeIn>
 
-          <div className="mt-16 grid items-end gap-6 lg:grid-cols-3">
-            {mitraPackages.map((pkg, i) => (
-              <motion.div
-                key={pkg.name}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: i * 0.12, duration: 0.5 }}
-                className={i === 1 ? "lg:-mt-8" : ""}
-              >
-                <div
-                  className={`relative flex flex-col rounded-3xl border p-8 transition-all duration-300 hover:shadow-2xl ${
-                    i === 1
-                      ? "border-primary bg-primary text-primary-foreground shadow-xl shadow-primary/20"
-                      : "border-accent-foreground/10 bg-accent-foreground/5 backdrop-blur-sm hover:border-primary/30"
-                  }`}
-                >
-                  {i === 1 && (
-                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                      <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-4 py-1 text-xs font-semibold text-secondary-foreground shadow-lg">
-                        <Star className="h-3 w-3" />
-                        PALING POPULER
-                      </span>
-                    </div>
-                  )}
-
-                  <div>
-                    <h3 className="text-lg font-semibold">{pkg.name}</h3>
-                    <div className="mt-3 flex items-baseline gap-1">
-                      <span className={`text-sm ${i === 1 ? "text-primary-foreground/60" : "text-accent-foreground/50"}`}>Rp</span>
-                      <span className="text-4xl font-extrabold tabular-nums">{(pkg.modal / 1_000_000).toFixed(0)}</span>
-                      <span className={`text-sm ${i === 1 ? "text-primary-foreground/60" : "text-accent-foreground/50"}`}>Juta</span>
-                    </div>
-                    <p className={`mt-2 text-sm ${i === 1 ? "text-primary-foreground/70" : "text-accent-foreground/50"}`}>
-                      Est. {pkg.pelanggan} pelanggan/hari
-                    </p>
+          <div className="mt-14 grid gap-6 lg:grid-cols-3">
+            {services.map((service, i) => (
+              <FadeIn key={service.title} delay={i * 0.1}>
+                <div className="group flex h-full flex-col rounded-3xl border border-border/50 bg-card p-8 transition-all duration-300 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5">
+                  <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
+                    <service.icon className="h-7 w-7" />
                   </div>
-
-                  <div className={`my-6 h-px ${i === 1 ? "bg-primary-foreground/20" : "bg-accent-foreground/10"}`} />
-
-                  <ul className="flex-1 space-y-3">
-                    {pkg.features.map((f) => (
-                      <li key={f} className="flex items-center gap-2.5 text-sm">
-                        <CheckCircle2 className={`h-4 w-4 shrink-0 ${i === 1 ? "text-secondary" : "text-primary"}`} />
+                  <h3 className="text-xl font-bold">{service.title}</h3>
+                  <ul className="mt-5 flex-1 space-y-3">
+                    {service.features.map((f) => (
+                      <li
+                        key={f}
+                        className="flex items-center gap-2.5 text-sm text-muted-foreground"
+                      >
+                        <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" />
                         {f}
                       </li>
                     ))}
                   </ul>
-
                   <Button
-                    className={`mt-8 w-full rounded-xl text-sm ${
-                      i === 1
-                        ? "bg-white text-primary hover:bg-white/90"
-                        : "border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground"
-                    }`}
-                    variant={i === 1 ? "default" : "outline"}
+                    className="mt-8 w-full rounded-xl"
+                    variant="outline"
                     size="lg"
                     asChild
                   >
-                    <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
-                      <Handshake className="mr-2 h-4 w-4" />
-                      Jadi Mitra {pkg.name}
+                    <a
+                      href="https://wa.me/6281234567890"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Selengkapnya
+                      <ArrowRight className="ml-2 h-4 w-4" />
                     </a>
                   </Button>
                 </div>
-              </motion.div>
+              </FadeIn>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ═══ GALLERY — Collage Masonry ═══ */}
-      <section id="gallery" className="px-6 py-28">
+      {/* ═══ TRUSTED BY — Logo Cloud ═══ */}
+      <div className="border-y border-border/50 px-6 py-16">
         <div className="mx-auto max-w-6xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-          >
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Gallery</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Lihat lebih dekat.
-            </h2>
-          </motion.div>
-
-          <div className="mt-14 grid auto-rows-[200px] grid-cols-2 gap-4 md:grid-cols-4">
-            {galleryImages.map((img, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: i * 0.06, duration: 0.5 }}
-                className={`group relative cursor-pointer overflow-hidden rounded-2xl ${
-                  img.span === "tall" ? "row-span-2" : img.span === "wide" ? "col-span-2" : ""
-                }`}
-                onClick={() => {
-                  setLightboxIndex(i);
-                  setLightboxOpen(true);
-                }}
-              >
-                <img
-                  src={img.src}
-                  alt={img.alt}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <p className="text-sm font-medium text-white">{img.alt}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Lightbox */}
-        <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
-          <DialogContent className="max-w-4xl border-none bg-black/95 p-0">
-            <div className="relative">
-              <img
-                src={galleryImages[lightboxIndex]?.src}
-                alt={galleryImages[lightboxIndex]?.alt}
-                className="max-h-[80vh] w-full object-contain"
-              />
-              <p className="absolute bottom-4 left-4 text-sm font-medium text-white/80">
-                {galleryImages[lightboxIndex]?.alt}
-              </p>
-              <button
-                onClick={() => setLightboxIndex((p) => (p - 1 + galleryImages.length) % galleryImages.length)}
-                className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
-                aria-label="Previous image"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </button>
-              <button
-                onClick={() => setLightboxIndex((p) => (p + 1) % galleryImages.length)}
-                className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
-                aria-label="Next image"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </button>
+          <FadeIn className="text-center">
+            <p className="text-sm font-medium text-muted-foreground">
+              Dipercaya oleh brand dan partner terkemuka
+            </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-8 sm:gap-12">
+              {trustedLogos.map((logo, i) => (
+                <motion.div
+                  key={logo}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08, duration: 0.4 }}
+                  className="flex h-12 items-center rounded-xl border border-border/50 bg-muted/50 px-6 text-sm font-bold tracking-wide text-muted-foreground/60 transition-all hover:border-primary/20 hover:text-foreground"
+                >
+                  {logo}
+                </motion.div>
+              ))}
             </div>
-          </DialogContent>
-        </Dialog>
-      </section>
+          </FadeIn>
+        </div>
+      </div>
 
-      {/* ═══ PERHITUNGAN ROI ═══ */}
-      <section id="roi" className="px-6 py-28">
-        <div className="mx-auto max-w-5xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Simulasi Investasi</p>
+      {/* ═══ HOW IT WORKS — Investor Journey ═══ */}
+      <section className="px-6 py-28">
+        <div className="mx-auto max-w-6xl">
+          <FadeIn className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+              Cara Kerja
+            </p>
             <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Perhitungan ROI
+              Semudah{" "}
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                4 Langkah
+              </span>
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-              Lihat estimasi keuntungan bisnis laundry Anda. Pilih paket dan lihat proyeksi balik modal.
+              Dari konsultasi hingga profit — proses investasi yang simpel dan transparan.
             </p>
-          </motion.div>
+          </FadeIn>
 
-          <div className="mt-12">
-            <Tabs value={selectedPackage} onValueChange={setSelectedPackage} className="w-full">
-              <TabsList className="mx-auto grid w-full max-w-md grid-cols-3">
-                {mitraPackages.map((pkg) => (
-                  <TabsTrigger key={pkg.name} value={pkg.name}>
-                    {pkg.name}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
+          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {investorJourney.map((step, i) => (
+              <FadeIn key={step.step} delay={i * 0.12}>
+                <div className="group relative h-full">
+                  {/* Connector */}
+                  {i < investorJourney.length - 1 && (
+                    <div className="absolute right-0 top-12 hidden h-px w-6 translate-x-full bg-gradient-to-r from-primary/40 to-transparent lg:block" />
+                  )}
+                  <div className="flex h-full flex-col rounded-3xl border border-border/50 bg-card p-6 transition-all duration-300 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5">
+                    <span className="text-5xl font-black text-primary/15 transition-colors group-hover:text-primary/30">
+                      {step.step}
+                    </span>
+                    <div className="mt-2 mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
+                      <step.icon className="h-6 w-6" />
+                    </div>
+                    <h3 className="text-lg font-bold">{step.title}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {step.desc}
+                    </p>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              {mitraPackages.map((pkg) => {
-                const r = calculateROI(pkg);
-                return (
-                  <TabsContent key={pkg.name} value={pkg.name}>
+      {/* ═══ TESTIMONIALS — Investor Reviews ═══ */}
+      <section className="relative overflow-hidden bg-accent px-6 py-28 text-accent-foreground">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden">
+          <Quote className="h-[40vw] w-[40vw] text-accent-foreground/[0.02]" />
+        </div>
+
+        <div className="relative mx-auto max-w-6xl">
+          <FadeIn className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+              Testimoni Investor
+            </p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+              Kata Mereka yang Sudah Berinvestasi
+            </h2>
+          </FadeIn>
+
+          <div className="mt-14 grid gap-6 md:grid-cols-3">
+            {investorTestimonials.map((t, i) => (
+              <FadeIn key={t.name} delay={i * 0.1}>
+                <div className="group h-full rounded-3xl border border-accent-foreground/10 bg-accent-foreground/5 p-8 backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:bg-accent-foreground/10">
+                  {/* Stars */}
+                  <div className="flex gap-0.5">
+                    {[...Array(t.rating)].map((_, j) => (
+                      <Star
+                        key={j}
+                        className="h-4 w-4 fill-primary text-primary"
+                      />
+                    ))}
+                  </div>
+                  <p className="mt-5 text-sm leading-relaxed text-accent-foreground/70">
+                    &ldquo;{t.text}&rdquo;
+                  </p>
+                  <div className="mt-6 flex items-center gap-3">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 text-sm font-bold text-primary">
+                      {t.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold">{t.name}</p>
+                      <p className="text-xs text-accent-foreground/50">
+                        {t.role}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ FAQ ═══ */}
+      <section id="faq" className="px-6 py-28">
+        <div className="mx-auto max-w-3xl">
+          <FadeIn className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+              FAQ
+            </p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+              Pertanyaan yang Sering{" "}
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Ditanyakan
+              </span>
+            </h2>
+          </FadeIn>
+
+          <div className="mt-14 space-y-3">
+            {faqItems.map((item, i) => (
+              <FadeIn key={i} delay={i * 0.05}>
+                <div className="rounded-2xl border border-border/50 bg-card transition-all duration-300 hover:border-primary/20">
+                  <button
+                    onClick={() => toggleFaq(i)}
+                    className="flex w-full items-center justify-between gap-4 p-6 text-left"
+                  >
+                    <span className="text-sm font-semibold sm:text-base">{item.q}</span>
                     <motion.div
-                      key={pkg.name}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4 }}
+                      animate={{ rotate: openFaq === i ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="shrink-0"
                     >
-                      {/* Info bar */}
-                      <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
-                        <span>Modal: <strong className="text-foreground">Rp {formatRupiah(pkg.modal)}</strong></span>
-                        <span>Pelanggan/hari: <strong className="text-foreground">{pkg.pelanggan}</strong></span>
-                        <span>Harga rata-rata: <strong className="text-foreground">Rp {pkg.harga.toLocaleString("id-ID")}</strong></span>
-                      </div>
-
-                      {/* Result cards */}
-                      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                        {[
-                          { icon: DollarSign, label: "Pendapatan / Bulan", value: r.pendapatanBulanan, format: true },
-                          { icon: TrendingUp, label: "Keuntungan Bersih", value: r.keuntunganBersih, format: true },
-                          { icon: Calendar, label: "Balik Modal (BEP)", value: r.bepBulan, suffix: " Bulan" },
-                          { icon: Target, label: "ROI Tahunan", value: r.roiPersen, suffix: "%" },
-                        ].map((card) => (
-                          <div
-                            key={card.label}
-                            className="rounded-2xl border border-border/50 bg-card p-6 text-center transition-all hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5"
-                          >
-                            <card.icon className="mx-auto mb-3 h-6 w-6 text-primary" />
-                            <p className="text-3xl font-extrabold tabular-nums">
-                              <AnimatedNumber
-                                value={card.value}
-                                suffix={card.suffix ?? ""}
-                                prefix={card.format ? "Rp " : ""}
-                              />
-                            </p>
-                            <p className="mt-2 text-xs text-muted-foreground">{card.label}</p>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Progress bar — BEP projection */}
-                      <div className="mt-10">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground">Proyeksi Balik Modal</span>
-                          <span className="font-semibold text-primary">{r.bepBulan} bulan</span>
-                        </div>
-                        <div className="mt-3 h-4 overflow-hidden rounded-full bg-muted">
-                          <motion.div
-                            key={pkg.name + "-bar"}
-                            initial={{ width: 0 }}
-                            animate={{ width: `${Math.min(100, (12 / r.bepBulan) * 100)}%` }}
-                            transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-                            className="h-full rounded-full bg-gradient-to-r from-primary to-secondary"
-                          />
-                        </div>
-                        <div className="mt-2 flex justify-between text-xs text-muted-foreground">
-                          <span>Bulan ke-0</span>
-                          <span>Bulan ke-12</span>
-                        </div>
-                      </div>
+                      <ChevronDown className="h-5 w-5 text-muted-foreground" />
                     </motion.div>
-                  </TabsContent>
-                );
-              })}
-            </Tabs>
+                  </button>
+                  <AnimatePresence>
+                    {openFaq === i && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="px-6 pb-6 text-sm leading-relaxed text-muted-foreground">
+                          {item.a}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ CTA SECTION ═══ */}
+      <section className="px-6 py-16">
+        <div className="mx-auto max-w-6xl">
+          <FadeIn>
+            <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary via-primary to-primary/80 px-8 py-16 text-center text-primary-foreground sm:px-16 sm:py-20">
+              {/* Decorative */}
+              <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-white/10 blur-2xl" />
+              <div className="pointer-events-none absolute -bottom-20 -left-20 h-60 w-60 rounded-full bg-white/10 blur-2xl" />
+              <div className="pointer-events-none absolute left-1/2 top-0 h-px w-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+
+              <h2 className="relative text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+                Siap Memulai Investasi
+                <br />
+                Laundry Autopilot?
+              </h2>
+              <p className="relative mx-auto mt-4 max-w-lg text-base text-primary-foreground/80">
+                Konsultasikan rencana investasi Anda dengan tim profesional
+                kami. Dapatkan proposal lengkap dan jadwalkan kunjungan outlet.
+              </p>
+              <div className="relative mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <Button
+                  size="lg"
+                  className="gap-2 rounded-xl bg-white px-8 text-base font-semibold text-primary shadow-xl hover:bg-white/90"
+                  asChild
+                >
+                  <a
+                    href="https://wa.me/6281234567890"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    Hubungi Kami
+                  </a>
+                </Button>
+                <Button
+                  size="lg"
+                  variant="ghost"
+                  className="gap-2 rounded-xl border border-white/20 text-base text-primary-foreground hover:bg-white/10"
+                  asChild
+                >
+                  <a href="#kontak">
+                    <Download className="h-4 w-4" />
+                    Download Proposal
+                  </a>
+                </Button>
+                <Button
+                  size="lg"
+                  variant="ghost"
+                  className="gap-2 rounded-xl border border-white/20 text-base text-primary-foreground hover:bg-white/10"
+                  asChild
+                >
+                  <a
+                    href="https://wa.me/6281234567890"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Calendar className="h-4 w-4" />
+                    Jadwalkan Konsultasi
+                  </a>
+                </Button>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ KONTAK ═══ */}
+      <section id="kontak" className="px-6 py-28">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid gap-12 lg:grid-cols-5">
+            <FadeIn className="lg:col-span-2">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                Kontak
+              </p>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+                Hubungi Kami
+              </h2>
+              <p className="mt-3 text-muted-foreground">
+                Siap menjawab pertanyaan Anda tentang investasi laundry
+                autopilot.
+              </p>
+
+              <div className="mt-10 space-y-6">
+                {[
+                  {
+                    icon: MapPin,
+                    label: "Alamat",
+                    value: "Jl. Contoh No. 123, Jakarta, Indonesia",
+                  },
+                  {
+                    icon: Phone,
+                    label: "Telepon",
+                    value: "+62 812-3456-7890",
+                  },
+                  {
+                    icon: Mail,
+                    label: "Email",
+                    value: "invest@shoshalaundry.com",
+                  },
+                  {
+                    icon: Clock,
+                    label: "Buka",
+                    value: "Senin - Minggu, 07:00 - 21:00 WIB",
+                  },
+                ].map((item) => (
+                  <div key={item.label} className="group flex items-start gap-4">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                      <item.icon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                        {item.label}
+                      </p>
+                      <p className="mt-0.5 font-medium">{item.value}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.1} className="lg:col-span-3">
+              <div className="rounded-3xl border border-border/50 bg-card p-8">
+                <h3 className="text-xl font-bold">Kirim Pesan</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Atau langsung chat via WhatsApp untuk respon lebih cepat
+                </p>
+                <form
+                  className="mt-8 space-y-5"
+                  onSubmit={(e) => e.preventDefault()}
+                >
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <div>
+                      <label
+                        className="text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                        htmlFor="name"
+                      >
+                        Nama
+                      </label>
+                      <input
+                        id="name"
+                        type="text"
+                        placeholder="Nama lengkap"
+                        className="mt-2 w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        className="text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                        htmlFor="phone"
+                      >
+                        Nomor WhatsApp
+                      </label>
+                      <input
+                        id="phone"
+                        type="tel"
+                        placeholder="08xxxxxxxxxx"
+                        className="mt-2 w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      className="text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                      htmlFor="email"
+                    >
+                      Email
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="email@contoh.com"
+                      className="mt-2 w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      className="text-xs font-medium uppercase tracking-wider text-muted-foreground"
+                      htmlFor="message"
+                    >
+                      Pesan
+                    </label>
+                    <textarea
+                      id="message"
+                      rows={4}
+                      placeholder="Ceritakan rencana investasi Anda..."
+                      className="mt-2 w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20"
+                    />
+                  </div>
+                  <Button className="w-full gap-2 rounded-xl" size="lg">
+                    <Send className="h-4 w-4" />
+                    Kirim Pesan
+                  </Button>
+                </form>
+              </div>
+            </FadeIn>
           </div>
         </div>
       </section>
@@ -875,47 +1302,82 @@ export default function Home() {
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/80">
                   <Droplets className="h-4 w-4 text-primary-foreground" />
                 </div>
-                <span className="text-lg font-bold">SHO SHA</span>
+                <span className="text-lg font-bold">SHO-SHA</span>
               </div>
               <p className="mt-4 text-sm leading-relaxed text-accent-foreground/50">
-                Layanan laundry profesional dengan kualitas premium. Bersih, wangi, dan terpercaya sejak 2019.
+                Investasi laundry autopilot dengan sistem manajemen profesional.
+                Passive income, active profit.
               </p>
               <div className="mt-5 flex gap-2">
-                <a href="#" className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent-foreground/5 text-accent-foreground/60 transition-all hover:bg-primary hover:text-primary-foreground">
+                <a
+                  href="#"
+                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent-foreground/5 text-accent-foreground/60 transition-all hover:bg-primary hover:text-primary-foreground"
+                >
                   <Instagram className="h-4 w-4" />
                 </a>
-                <a href="#" className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent-foreground/5 text-accent-foreground/60 transition-all hover:bg-primary hover:text-primary-foreground">
+                <a
+                  href="#"
+                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent-foreground/5 text-accent-foreground/60 transition-all hover:bg-primary hover:text-primary-foreground"
+                >
                   <MessageCircle className="h-4 w-4" />
                 </a>
               </div>
             </div>
 
             <div>
-              <h4 className="text-sm font-semibold uppercase tracking-wider">Navigasi</h4>
+              <h4 className="text-sm font-semibold uppercase tracking-wider">
+                Navigasi
+              </h4>
               <ul className="mt-4 space-y-2.5 text-sm text-accent-foreground/50">
-                <li className="transition-colors hover:text-primary"><a href="#tentang">Tentang Kami</a></li>
-                <li className="transition-colors hover:text-primary"><a href="#layanan">Layanan Mitra</a></li>
-                <li className="transition-colors hover:text-primary"><a href="#gallery">Gallery</a></li>
-                <li className="transition-colors hover:text-primary"><a href="#roi">Perhitungan ROI</a></li>
+                {navLinks.map((link) => (
+                  <li
+                    key={link.label}
+                    className="transition-colors hover:text-primary"
+                  >
+                    <a href={link.href}>{link.label}</a>
+                  </li>
+                ))}
               </ul>
             </div>
 
             <div>
-              <h4 className="text-sm font-semibold uppercase tracking-wider">Kontak</h4>
+              <h4 className="text-sm font-semibold uppercase tracking-wider">
+                Layanan
+              </h4>
               <ul className="mt-4 space-y-2.5 text-sm text-accent-foreground/50">
-                <li className="flex items-center gap-2"><MapPin className="h-3.5 w-3.5" />Jl. Contoh No. 123, Jakarta</li>
-                <li className="flex items-center gap-2"><Phone className="h-3.5 w-3.5" />+62 812-3456-7890</li>
-                <li className="flex items-center gap-2"><Mail className="h-3.5 w-3.5" />hello@shoshalaundry.com</li>
+                <li className="transition-colors hover:text-primary">
+                  <a href="#layanan">Self-Service Laundry</a>
+                </li>
+                <li className="transition-colors hover:text-primary">
+                  <a href="#layanan">Drop-Off Laundry</a>
+                </li>
+                <li className="transition-colors hover:text-primary">
+                  <a href="#layanan">Membership TORU</a>
+                </li>
+                <li className="transition-colors hover:text-primary">
+                  <a href="#layanan">Investasi Autopilot</a>
+                </li>
               </ul>
             </div>
 
             <div>
-              <h4 className="text-sm font-semibold uppercase tracking-wider">Jam Buka</h4>
-              <div className="mt-4 space-y-2.5 text-sm text-accent-foreground/50">
-                <p>Senin - Minggu</p>
-                <p className="text-lg font-bold text-accent-foreground">07:00 - 21:00</p>
-                <p className="text-xs">Termasuk hari libur nasional</p>
-              </div>
+              <h4 className="text-sm font-semibold uppercase tracking-wider">
+                Kontak
+              </h4>
+              <ul className="mt-4 space-y-2.5 text-sm text-accent-foreground/50">
+                <li className="flex items-center gap-2">
+                  <MapPin className="h-3.5 w-3.5" />
+                  Jakarta, Indonesia
+                </li>
+                <li className="flex items-center gap-2">
+                  <Phone className="h-3.5 w-3.5" />
+                  +62 812-3456-7890
+                </li>
+                <li className="flex items-center gap-2">
+                  <Mail className="h-3.5 w-3.5" />
+                  invest@shoshalaundry.com
+                </li>
+              </ul>
             </div>
           </div>
 
@@ -923,10 +1385,11 @@ export default function Home() {
 
           <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
             <p className="text-xs text-accent-foreground/40">
-              &copy; {new Date().getFullYear()} SHO SHA LAUNDRY. All rights reserved.
+              &copy; {new Date().getFullYear()} SHO-SHA LAUNDRY. All rights
+              reserved.
             </p>
             <p className="text-xs text-accent-foreground/30">
-              Crafted with care, just like your laundry.
+              Investor pasif, profit aktif.
             </p>
           </div>
         </div>
