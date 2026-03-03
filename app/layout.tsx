@@ -1,8 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans, DM_Sans, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import JsonLd from "@/components/json-ld";
 
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  weight: ['400','600','700'],
+});
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-jakarta',
+  weight: ['400','500','600','700']
+})
+
+const dmsans = DM_Sans({
+  subsets: ['latin'],
+  variable: '--font-dmsans',
+  weight: ['400','500']
+})
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,8 +35,8 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://shosha-laundry.com"),
   title: {
 
-    default: "SHO SHA LAUNDRY | Professional Laundry & Investment",
-    template: "%s | SHO SHA LAUNDRY",
+    default: "SHO-SHA LAUNDRY | Professional Laundry & Investment",
+    template: "%s | SHO-SHA LAUNDRY",
   },
   description:
     "Layanan laundry profesional dengan sistem autopilot. Investasi laundry terpercaya dengan keuntungan maksimal dan ROI teruji 15+ tahun.",
@@ -94,7 +111,7 @@ export default function RootLayout({
   return (
     <html lang="id" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
+        className={`${inter.variable} ${jakarta.variable} ${dmsans.variable} ${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
         <JsonLd />
         {children}
