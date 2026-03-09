@@ -177,7 +177,7 @@ const mitraPackages = [
 const testimonials = [
   {
     name: "Dewi Kartika",
-    role: "Pelanggan Setia",
+    role: "Pelanggan",
     text: "Saya sudah mencuci di SHO-SHA hampir 3 tahun dan selalu puas dengan hasilnya.",
     img: "/user.png",
   },
@@ -935,7 +935,7 @@ export default function Home() {
       </section>
 
       {/* ═══ CTA SECTION ═══ */}
-      <section className="px-6 py-16 bg-primary-foreground">
+      <section className="px-6 py-16 bg-orange-50">
         <div className="mx-auto max-w-6xl">
           <FadeIn>
             <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary via-primary to-primary/80 shadow-xl px-8 py-16 text-center text-primary-foreground sm:px-16 sm:py-20">

@@ -150,17 +150,6 @@ const mitraPackages = [
   },
 ];
 
-const marqueeWords = [
-  "AUTOPILOT",
-  "PASSIVE INCOME",
-  "ROI 65%",
-  "15+ TAHUN",
-  "TRANSPARAN",
-  "PROFESIONAL",
-  "24/7 MONITORING",
-  "PROVEN SYSTEM",
-];
-
 const investorJourney = [
   {
     step: "01",

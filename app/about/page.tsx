@@ -110,6 +110,48 @@ const trustedLogos = [
   "OVO",
 ];
 
+const faqItems = [
+  {
+    q: "Berapa modal minimum untuk berinvestasi?",
+    a: "Modal investasi mulai dari Rp 150 juta untuk satu outlet laundry lengkap termasuk mesin, interior, branding, dan biaya operasional 3 bulan pertama. Kami juga menyediakan opsi cicilan melalui mitra perbankan.",
+  },
+  {
+    q: "Apakah saya perlu mengelola outlet sendiri?",
+    a: "Tidak. SHO-SHA menggunakan sistem autopilot — seluruh operasional dikelola oleh tim manajemen profesional kami. Anda sebagai investor hanya perlu memantau performa melalui dashboard real-time.",
+  },
+  {
+    q: "Berapa estimasi ROI dan payback period?",
+    a: "ROI rata-rata mencapai 65% per tahun dengan payback period sekitar 19 bulan. Angka ini berdasarkan data aktual dari outlet-outlet yang sudah beroperasi.",
+  },
+  {
+    q: "Bagaimana sistem pembagian keuntungan?",
+    a: "Keuntungan bersih dibagi sesuai perjanjian MoU. Laporan keuangan diberikan setiap bulan secara transparan melalui dashboard digital dan laporan tertulis.",
+  },
+  {
+    q: "Apakah ada jaminan jika bisnis tidak berjalan?",
+    a: "Kami memberikan garansi dukungan operasional penuh dan buyback guarantee sesuai ketentuan dalam MoU. Dengan track record 15+ tahun, kami memastikan setiap outlet dikelola untuk sukses.",
+  },
+  {
+    q: "Di mana lokasi outlet yang tersedia?",
+    a: "Kami memiliki tim riset lokasi yang menganalisis traffic, demografi, dan potensi pasar. Saat ini tersedia di area Jabodetabek dan beberapa kota besar di Indonesia. Lokasi baru terus dibuka.",
+  },
+  {
+    q: "Apa yang membedakan SHO-SHA dari franchise laundry lain?",
+    a: "Sistem full-autopilot, dashboard monitoring 24/7, tim teknisi siaga, dan track record 15+ tahun yang proven. Investor benar-benar pasif — tidak perlu terlibat operasional sama sekali.",
+  },
+];
+
+const marqueeWords = [
+  "AUTOPILOT",
+  "PASSIVE INCOME",
+  "ROI 65%",
+  "15+ TAHUN",
+  "TRANSPARAN",
+  "PROFESIONAL",
+  "24/7 MONITORING",
+  "PROVEN SYSTEM",
+];
+
 const navLinks = [
   { label: "Beranda", href: "/home" },
   { label: "Kemitraan", href: "/partnership" },
@@ -179,6 +221,20 @@ function FadeIn({
   );
 }
 
+/* ─── Marquee ─── */
+function Marquee({ children, reverse = false }: { children: React.ReactNode; reverse?: boolean }) {
+  return (
+    <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+      <div
+        className={`flex shrink-0 gap-6 py-4 ${reverse ? "animate-marquee-reverse" : "animate-marquee"}`}
+      >
+        {children}
+        {children}
+      </div>
+    </div>
+  );
+}
+
 /* ═══════════════════════════════════════════
    MAIN PAGE
    ═══════════════════════════════════════════ */
@@ -187,7 +243,6 @@ export default function About() {
 /* ═══════════════════════════════════════════
    DATA ARRAYS — edit these to update content
    ═══════════════════════════════════════════ */
-
   const hero = {
       image: "https://picsum.photos/id/517/1920/1080",
       heroImage: "/hero1.svg",
@@ -227,6 +282,12 @@ export default function About() {
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  /* FAQ accordion */
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const toggleFaq = useCallback((i: number) => {
+    setOpenFaq((prev) => (prev === i ? null : i));
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -642,6 +703,75 @@ export default function About() {
         </div>
       </div>
 
+      {/* ═══ FAQ ═══ */}
+      <section id="faq" className="px-6 py-28">
+        <div className="mx-auto max-w-3xl">
+          <FadeIn className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+              FAQ
+            </p>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
+              Pertanyaan yang Sering{" "}
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Ditanyakan
+              </span>
+            </h2>
+          </FadeIn>
+
+          <div className="mt-14 space-y-3">
+            {faqItems.map((item, i) => (
+              <FadeIn key={i} delay={i * 0.05}>
+                <div className="rounded-2xl border border-border/50 bg-card transition-all duration-300 hover:border-primary/20">
+                  <button
+                    onClick={() => toggleFaq(i)}
+                    className="flex w-full items-center justify-between gap-4 p-6 text-left"
+                  >
+                    <span className="text-sm font-semibold sm:text-base">{item.q}</span>
+                    <motion.div
+                      animate={{ rotate: openFaq === i ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="shrink-0"
+                    >
+                      <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                    </motion.div>
+                  </button>
+                  <AnimatePresence>
+                    {openFaq === i && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="px-6 pb-6 text-sm leading-relaxed text-muted-foreground">
+                          {item.a}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* ═══ MARQUEE STRIP ═══ */}
+      <div className="border-y border-border/50 bg-accent py-5">
+        <Marquee>
+          {marqueeWords.map((word) => (
+            <span
+              key={word}
+              className="flex items-center gap-8 text-sm font-bold tracking-[0.2em] text-accent-foreground/70"
+            >
+              {word}
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
+            </span>
+          ))}
+        </Marquee>
+      </div>
+
       {/* ═══ GALLERY — Collage Masonry ═══ */}
       <section id="gallery" className="px-6 py-28">
         <div className="mx-auto max-w-6xl">
@@ -718,7 +848,7 @@ export default function About() {
       </section>
 
       {/* ═══ CTA SECTION ═══ */}
-      <section className="px-6 py-16">
+      <section className="px-6 py-16 bg-orange-50">
         <div className="mx-auto max-w-6xl">
           <FadeIn>
             <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary via-primary to-primary/80 px-8 py-16 text-center text-primary-foreground sm:px-16 sm:py-20">

@@ -84,17 +84,6 @@ const faqItems = [
   },
 ];
 
-const marqueeWords = [
-  "AUTOPILOT",
-  "PASSIVE INCOME",
-  "ROI 65%",
-  "15+ TAHUN",
-  "TRANSPARAN",
-  "PROFESIONAL",
-  "24/7 MONITORING",
-  "PROVEN SYSTEM",
-];
-
 const navLinks = [
   { label: "Beranda", href: "/home" },
   { label: "Tentang Kami", href: "/about" },
@@ -485,7 +474,7 @@ export default function Faq() {
       </section>
 
       {/* ═══ CTA SECTION ═══ */}
-      <section className="px-6 py-16">
+      <section className="px-6 py-16 bg-orange-50">
         <div className="mx-auto max-w-6xl">
           <FadeIn>
             <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary via-primary to-primary/80 px-8 py-16 text-center text-primary-foreground sm:px-16 sm:py-20">
