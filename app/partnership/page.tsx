@@ -655,62 +655,6 @@ export default function Partnership() {
           </div>
         </div>
       </section>
-
-      {/* ═══ LAYANAN ═══ */}
-      {/* <section id="layanan" className="px-6 py-28">
-        <div className="mx-auto max-w-6xl">
-          <FadeIn className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-              Layanan
-            </p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-              Solusi Laundry{" "}
-              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Lengkap
-              </span>
-            </h2>
-          </FadeIn>
-
-          <div className="mt-14 grid gap-6 lg:grid-cols-3">
-            {services.map((service, i) => (
-              <FadeIn key={service.title} delay={i * 0.1}>
-                <div className="group flex h-full flex-col rounded-3xl border border-border/50 bg-card p-8 transition-all duration-300 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5">
-                  <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
-                    <service.icon className="h-7 w-7" />
-                  </div>
-                  <h3 className="text-xl font-bold">{service.title}</h3>
-                  <ul className="mt-5 flex-1 space-y-3">
-                    {service.features.map((f) => (
-                      <li
-                        key={f}
-                        className="flex items-center gap-2.5 text-sm text-muted-foreground"
-                      >
-                        <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <Button
-                    className="mt-8 w-full rounded-xl"
-                    variant="outline"
-                    size="lg"
-                    asChild
-                  >
-                    <a
-                      href="https://wa.me/6281234567890"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Selengkapnya
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section> */}
       
       {/* ═══ HOW IT WORKS — Investor Journey ═══ */}
       <section className="px-6 py-28">
@@ -932,22 +876,22 @@ export default function Partnership() {
                   {
                     icon: MapPin,
                     label: "Alamat",
-                    value: "Jl. Contoh No. 123, Jakarta, Indonesia",
+                    value: "Jl. Pahlawan No.34, RT.1/RW.5, Sukabumi Selatan, Kec. Kebon Jeruk, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11560, Indonesia",
                   },
                   {
                     icon: Phone,
                     label: "Telepon",
-                    value: "+62 812-3456-7890",
+                    value: "+62 811-1774-438",
                   },
                   {
                     icon: Mail,
                     label: "Email",
-                    value: "invest@shoshalaundry.com",
+                    value: "yesielfira687@gmail.com",
                   },
                   {
                     icon: Clock,
                     label: "Buka",
-                    value: "Senin - Minggu, 07:00 - 21:00 WIB",
+                    value: "Senin - Minggu, 08:00 - 20:00 WIB",
                   },
                 ].map((item) => (
                   <div key={item.label} className="group flex items-start gap-4">
