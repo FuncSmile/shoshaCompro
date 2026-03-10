@@ -237,8 +237,8 @@ const outlets = [
 
 const socialLinks = [
   { icon: Instagram, href: "https://www.instagram.com/shoshalaundryofficial", label: "Instagram" },
-  { icon: Facebook, href: "#", label: "Facebook" },
-  { icon: MessageCircle, href: "#", label: "WhatsApp" },
+  { icon: Facebook, href: "https://www.facebook.com/profile.php?id=100087515256650", label: "Facebook" },
+  { icon: MessageCircle, href: "https://wa.me/628111774438", label: "WhatsApp" },
 ];
 
 /* ═══════════════════════════════════════════
@@ -308,7 +308,7 @@ export default function Partnership() {
    DATA ARRAYS — edit these to update content
    ═══════════════════════════════════════════ */
   const hero = {
-      image: "https://picsum.photos/id/525/1920/1080",
+      image: "/units/pahlawan.png",
       heroImage: "/hero2.svg",
       tagline: "Mitra Bisnis\nSHO-SHA.",
       subtitle: "Bergabunglah dengan jaringan franchise laundry yang terus berkembang di Indonesia. Didukung sistem, tim profesional, dan peluang keuntungan berkelanjutan.",
@@ -404,7 +404,7 @@ export default function Partnership() {
 
             <div className="flex items-center gap-3">
               <Button size="sm" className="hidden rounded-xl text-xs sm:inline-flex" asChild>
-                <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
                   Hubungi Kami
                 </a>
@@ -474,7 +474,7 @@ export default function Partnership() {
                   </div>
                   
                   <Button size="sm" className="rounded-xl text-xs sm:inline-flex" asChild>
-                    <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                    <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                       <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
                       Hubungi Kami
                     </a>
@@ -524,7 +524,7 @@ export default function Partnership() {
                 className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:items-start lg:items-center"
               >
                 <Button size="lg" className="group gap-2 rounded-xl px-8 text-base" asChild>
-                  <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                     Hubungi Kami
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </a>
@@ -644,7 +644,7 @@ export default function Partnership() {
                   </ul>
 
                   <Button className={`mt-8 w-full rounded-xl text-sm ${i === 1 ? "bg-white text-primary hover:bg-white/90" : "border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground"}`} variant={i === 1 ? "default" : "outline"} size="lg" asChild>
-                    <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                    <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                       <Handshake className="mr-2 h-4 w-4" />
                       Jadi Mitra {pkg.name}
                     </a>
@@ -846,7 +846,7 @@ export default function Partnership() {
                   </div>
 
                   <Button className="w-full rounded-2xl gap-2" size="lg" asChild>
-                    <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                    <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                       Dapatkan Proposal Lengkap
                       <Download className="h-4 w-4" />
                     </a>
@@ -1096,8 +1096,8 @@ export default function Partnership() {
 
             <div>
               <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Kantor Pusat</h4>
-              <p className="mt-6 text-sm text-accent-foreground/50 leading-relaxed">BSD Business Center, Tower B Lt. 12<br />Tangerang, Indonesia 15310</p>
-              <p className="mt-4 text-lg font-bold">07:00 - 21:00</p>
+              <p className="mt-6 text-sm text-accent-foreground/50 leading-relaxed">Jl. Pahlawan No.34, RT.1/RW.5, Sukabumi Selatan<br />Kec. Kebon Jeruk, Kota Jakarta Barat<br />Daerah Khusus Ibukota Jakarta 11560, Indonesia</p>
+              <p className="mt-4 text-lg font-bold">08:00 - 20:00</p>
               <p className="mt-1 text-xs text-accent-foreground/30">Setiap hari buka</p>
             </div>
           </div>

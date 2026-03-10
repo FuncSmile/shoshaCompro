@@ -7,31 +7,32 @@ export default function WelcomePage() {
   const router = useRouter();
 
   const units = [
-    { name: "Pahlawan", address: "Jl. Pahlawan No.34, RT.10/RW.4, Sukabumi Sel., Kec. Kb. Jeruk, Kota Jakarta Barat", path: "/units-pahlawan" },
-    { name: "Radio Dalam Lama", address: " Jl. Ps. Inpres No.65, RW.14, Gandaria Utara, Kec. Kby. Baru, Jakarta", path: "/units-rd-lama" },
-    { name: "Assirot", address: "Jl. Assirot No.8B, Grogol Sel., Kec. Kb. Jeruk, Kota Jakarta Selatan", path: "/units-assirot" },
-    { name: "Ciledug", address: "Jl. Raden Saleh No.55, RT.003/RW.008, Karang Tengah, Kec. Karang Tengah, Kota Tangerang", path: "/units-ciledug" },
-    { name: "Cipete Utara", address: "Jl. Damai Raya No.9A, Cipete Utara, Kec. Kby. Baru, Kota Jakarta Selatan", path: "/units-cipete-utara" },
-    { name: "Kebon Mangga", address: "Jl. Kebon Mangga 1, RT.01/007, No.15, RT.5/RW.7, Cipulir, Kec. Kebayoran Lama, Kota Jakarta Selatan", path: "/units-kebon-mangga" },
-    { name: "Kemanggisan Pulo", address: "Jl. Kemanggisan Pulo, RT.4/RW.17, Palmerah, Kec. Palmerah, Kota Jakarta Barat", path: "/units-k-pulo" },
-    { name: "KPBD", address: "Jl. Raya Kby. Lama Jl. Kpbd No.6, RT.10/RW.1, Sukabumi Sel., Kec. Kb. Jeruk, Kota Jakarta Barat", path: "/units-kpbd" },
-    { name: "Madrasah", address: "Jl. Madrasah SDN No.1, RT.12/RW.2, Gandaria Sel., Kec. Cilandak, Kota Jakarta Selatan", path: "/units-madrasah" },
-    { name: "Petukangan Baru", address: "Jl. H. Muchtar Raya No.37-1, RT.8/RW.1, Petukangan Utara, Kec. Pesanggrahan, Kota Jakarta Selatan", path: "/units-petukangan-baru" },
-    { name: "Petukangan Lama", address: "Dekat Meliala Foto, Jl. Kostrad Pusri No.3, RT.3/RW.5, Petukangan Utara, Kec. Pesanggrahan, Kota Jakarta Selatan", path: "/units-petukangan-lama" },
-    { name: "Radio Dalam 24 Jam", address: "Jl. Ps. Inpres No.80a, RT.4/RW.14, Gandaria Utara, Kec. Kby. Baru, Kota Jakarta Selatan", path: "/units-rd-24j" },
-    { name: "Tanah Kusir", address: "Jl. Tanah Kusir II No.15, RT.9/RW.9, Kby. Lama Sel., Kec. Kebayoran Lama, Kota Jakarta Selatan", path: "/units-tanah-kusir" },
+    { name: "Pahlawan", address: "Kebon Jeruk, Kota Jakarta Barat", path: "/units-pahlawan" }, //Jl. Pahlawan No.34, RT.10/RW.4, Sukabumi Sel., Kec. 
+    { name: "Radio Dalam Lama", address: " Kebayoran Baru, Jakarta", path: "/units-rd-lama" }, //Jl. Ps. Inpres No.65, RW.14, Gandaria Utara, Kec. 
+    { name: "Assirot", address: "Kebon Jeruk, Kota Jakarta Selatan", path: "/units-assirot" }, //Jl. Assirot No.8B, Grogol Sel., Kec. 
+    { name: "Ciledug", address: "Karang Tengah, Kota Tangerang", path: "/units-ciledug" }, //Jl. Raden Saleh No.55, RT.003/RW.008, Karang Tengah, Kec. 
+    { name: "Cipete Utara", address: "Kebayoran Baru, Kota Jakarta Selatan", path: "/units-cipete-utara" }, //Jl. Damai Raya No.9A, Cipete Utara, Kec. 
+    { name: "Kebon Mangga", address: "Kebayoran Lama, Kota Jakarta Selatan", path: "/units-kebon-mangga" }, //Jl. Kebon Mangga 1, RT.01/007, No.15, RT.5/RW.7, Cipulir, Kec. 
+    { name: "Kemanggisan Pulo", address: "Palmerah, Kota Jakarta Barat", path: "/units-k-pulo" }, //Jl. Kemanggisan Pulo, RT.4/RW.17, Palmerah, Kec. 
+    { name: "KPBD", address: "Kebon Jeruk, Kota Jakarta Barat", path: "/units-kpbd" }, //Jl. Raya Kby. Lama Jl. Kpbd No.6, RT.10/RW.1, Sukabumi Sel., Kec. 
+    { name: "Madrasah", address: "Cilandak, Kota Jakarta Selatan", path: "/units-madrasah" }, //Jl. Madrasah SDN No.1, RT.12/RW.2, Gandaria Sel., Kec. 
+    { name: "Petukangan Baru", address: "Pesanggrahan, Kota Jakarta Selatan", path: "/units-petukangan-baru" }, //Jl. H. Muchtar Raya No.37-1, RT.8/RW.1, Petukangan Utara, Kec. 
+    { name: "Petukangan Lama", address: "Pesanggrahan, Kota Jakarta Selatan", path: "/units-petukangan-lama" }, //Dekat Meliala Foto, Jl. Kostrad Pusri No.3, RT.3/RW.5, Petukangan Utara, Kec. 
+    { name: "Radio Dalam 24 Jam", address: "Kebayoran Baru, Kota Jakarta Selatan", path: "/units-rd-24j" }, //Jl. Ps. Inpres No.80a, RT.4/RW.14, Gandaria Utara, Kec. 
+    { name: "Tanah Kusir", address: "Kebayoran Lama, Kota Jakarta Selatan", path: "/units-tanah-kusir" }, //Jl. Tanah Kusir II No.15, RT.9/RW.9, Kby. Lama Sel., Kec. 
   ];
 
   return (
-    <main className="relative min-h-screen flex justify-center pt-20 pb-20 px-6 bg-[#FFF9E3]">
+    <main className="relative min-h-screen flex justify-center pt-20 pb-20 px-6">
+      {/* bg-[#FFF9E3] */}
 
       {/* Here to change BACKGROUND to Image*/}
-      {/* <div
+      <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/background.png')" }}
+        style={{ backgroundImage: "url('/mesin/mesin1.jpg')" }}
       />
 
-      <div className="absolute inset-0 bg-white/40" /> */}
+      <div className="absolute inset-0 bg-white/40" />
 
       {/* QR INSTAGRAM */}
       <div className="absolute right-4 xl:right-12 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-3">
@@ -89,7 +90,7 @@ export default function WelcomePage() {
 
           {/* Facebook */}
           <a
-            href="https://facebook.com"
+            href="https://www.facebook.com/profile.php?id=100087515256650"
             target="_blank"
             className="
               w-12 h-12 flex items-center justify-center
@@ -110,7 +111,7 @@ export default function WelcomePage() {
 
         {/* LOGO */}
         <img
-          src="/logo2.jpg"
+          src="/logo2.svg"
           alt="Sho-Sha Laundry"
           className="
             w-24 h-24 rounded-full object-cover shadow-lg mt-10 mb-5
@@ -149,7 +150,7 @@ export default function WelcomePage() {
           Cabang
         </p>
 
-        {/* UNITS with outlet icon and address */}
+        {/* UNITS */}
         <div className="w-full flex flex-col items-center gap-4">
           {units.map((unit) => (
             <button
@@ -164,11 +165,11 @@ export default function WelcomePage() {
               "
             >
               {/* Outlet Icon */}
-              <span className="shrink-0 text-gray-600">
+              <span className="shrink-0 w-10 h-10 rounded-full overflow-hidden bg-white shadow-sm flex items-center justify-center">
                 <img 
-                  src="/ic_outlet.png" 
+                  src="/mesin/mesin1.jpg" 
                   alt="Outlet" 
-                  className="w-6 h-6"
+                  className="w-full h-full object-cover"
                 />
               </span>
 

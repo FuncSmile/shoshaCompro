@@ -59,22 +59,10 @@ const timeline = [
 
 const teamMembers = [
   {
-    name: "Anton Agusta",
-    role: "Founder & CEO",
-    desc: "15+ tahun pengalaman di industri laundry dan sistem manajemen operasional.",
-    image: "/team/anton.jpg",
-  },
-  {
     name: "Yesi Elfira",
     role: "COO",
     desc: "Ahli operasional dan quality control dengan track record membangun 10+ outlet.",
-    image: "/team/yesi.jpg",
-  },
-  {
-    name: "Riyanti",
-    role: "CFO",
-    desc: "Spesialis keuangan dan analisa investasi untuk memastikan ROI optimal.",
-    image: "/team/riyanti.jpg",
+    image: "/founder/yesi.svg",
   },
 ];
 
@@ -176,8 +164,8 @@ const outlets = [
 
 const socialLinks = [
   { icon: Instagram, href: "https://www.instagram.com/shoshalaundryofficial", label: "Instagram" },
-  { icon: Facebook, href: "#", label: "Facebook" },
-  { icon: MessageCircle, href: "#", label: "WhatsApp" },
+  { icon: Facebook, href: "https://www.facebook.com/profile.php?id=100087515256650", label: "Facebook" },
+  { icon: MessageCircle, href: "https://wa.me/628111774438", label: "WhatsApp" },
 ];
 
 /* ═══════════════════════════════════════════
@@ -185,14 +173,14 @@ const socialLinks = [
    ═══════════════════════════════════════════ */
 
 const galleryImages = [
-  { src: "https://picsum.photos/id/395/600/400", alt: "Outlet modern SHO SHA", span: "tall" as const },
-  { src: "https://picsum.photos/id/401/600/400", alt: "Mesin cuci industri", span: "normal" as const },
-  { src: "https://picsum.photos/id/403/600/400", alt: "Tim profesional", span: "wide" as const },
-  { src: "https://picsum.photos/id/399/600/400", alt: "Hasil cucian rapi", span: "normal" as const },
-  { src: "https://picsum.photos/id/411/600/400", alt: "Proses quality control", span: "tall" as const },
-  { src: "https://picsum.photos/id/416/600/400", alt: "Area packing premium", span: "normal" as const },
-  { src: "https://picsum.photos/id/431/600/400", alt: "Interior outlet bersih", span: "wide" as const },
-  { src: "https://picsum.photos/id/435/600/400", alt: "Layanan antar jemput", span: "normal" as const },
+  { src: "/gallery/galeri.jpg", alt: "Outlet modern SHO SHA", span: "tall" as const },
+  { src: "/units/rd24j.png", alt: "Mesin cuci industri", span: "normal" as const },
+  { src: "/units/rd_lama.jpg", alt: "Tim profesional", span: "wide" as const },
+  { src: "/units/pahlawan.png", alt: "Hasil cucian rapi", span: "normal" as const },
+  { src: "/units/pulo.png", alt: "Proses quality control", span: "tall" as const },
+  { src: "/units/rd_lama2.jpg", alt: "Area packing premium", span: "normal" as const },
+  { src: "/mesin/mesin1.jpg", alt: "Interior outlet bersih", span: "wide" as const },
+  { src: "/units/madrasah.jpg", alt: "Layanan antar jemput", span: "normal" as const },
 ];
 
 /* ═══════════════════════════════════════════
@@ -244,7 +232,7 @@ export default function About() {
    DATA ARRAYS — edit these to update content
    ═══════════════════════════════════════════ */
   const hero = {
-      image: "https://picsum.photos/id/517/1920/1080",
+      image: "/mesin/mesin1.jpg",
       heroImage: "/hero1.svg",
       tagline: "Tentang Kami,\nSHO-SHA.",
       subtitle: "Layanan laundry profesional dengan standar premium untuk pakaian Anda.",
@@ -342,7 +330,7 @@ export default function About() {
 
             <div className="flex items-center gap-3">
               <Button size="sm" className="hidden rounded-xl text-xs sm:inline-flex" asChild>
-                <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
                   Hubungi Kami
                 </a>
@@ -412,7 +400,7 @@ export default function About() {
                   </div>
                   
                   <Button size="sm" className="rounded-xl text-xs sm:inline-flex" asChild>
-                    <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                    <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                       <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
                       Hubungi Kami
                     </a>
@@ -462,7 +450,7 @@ export default function About() {
                 className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:items-start lg:items-center"
               >
                 <Button size="lg" className="group gap-2 rounded-xl px-8 text-base" asChild>
-                  <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                     Hubungi Kami
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </a>
@@ -593,17 +581,17 @@ export default function About() {
               </h3>
             </FadeIn>
 
-            <div className="mt-14 grid gap-6 sm:grid-cols-3">
+            <div className="mt-14 justify-center gap-8 sm:flex">
               {teamMembers.map((member, i) => (
                 <FadeIn key={member.name} delay={i * 0.1}>
                   <div className="group rounded-3xl border border-accent-foreground/10 bg-accent-foreground/5 p-8 text-center backdrop-blur-sm transition-all duration-300 hover:border-primary/30 hover:bg-accent-foreground/10">
-                    {/* Avatar placeholder */}
-                    <div className="mx-auto h-20 w-20 overflow-hidden rounded-full border border-primary/20">
+                    {/* Team of Us */}
+                    <div className="mx-auto h-32 w-32 overflow-hidden rounded-full border-4 border-primary/20 shadow-lg">
                       <Image
                         src={member.image}
                         alt={member.name}
-                        width={80}
-                        height={80}
+                        width={128}
+                        height={128}
                         className="h-full w-full object-cover"
                       />
                     </div>
@@ -663,7 +651,7 @@ export default function About() {
                     asChild
                   >
                     <a
-                      href="https://wa.me/6281234567890"
+                      href="https://wa.me/628111774438"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -873,7 +861,7 @@ export default function About() {
                   asChild
                 >
                   <a
-                    href="https://wa.me/6281234567890"
+                    href="https://wa.me/628111774438"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -888,7 +876,7 @@ export default function About() {
                   asChild
                 >
                   <a
-                    href="https://wa.me/6281234567890"
+                    href="https://wa.me/628111774438"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -954,8 +942,8 @@ export default function About() {
 
             <div>
               <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Kantor Pusat</h4>
-              <p className="mt-6 text-sm text-accent-foreground/50 leading-relaxed">BSD Business Center, Tower B Lt. 12<br />Tangerang, Indonesia 15310</p>
-              <p className="mt-4 text-lg font-bold">07:00 - 21:00</p>
+              <p className="mt-6 text-sm text-accent-foreground/50 leading-relaxed">Jl. Pahlawan No.34, RT.1/RW.5, Sukabumi Selatan<br />Kec. Kebon Jeruk, Kota Jakarta Barat<br />Daerah Khusus Ibukota Jakarta 11560, Indonesia</p>
+              <p className="mt-4 text-lg font-bold">08:00 - 20:00</p>
               <p className="mt-1 text-xs text-accent-foreground/30">Setiap hari buka</p>
             </div>
           </div>

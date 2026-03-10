@@ -58,19 +58,19 @@ import Link from "next/link";
 
 const heroSlides = [
   {
-    image: "https://picsum.photos/id/517/1920/1080",
+    image: "/mesin/mesin1.jpg",
     heroImage: "/hero1.svg",
     tagline: "Bersih Sempurna,\nSetiap Helai.",
     subtitle: "Layanan laundry profesional dengan standar premium untuk pakaian Anda.",
   },
   {
-    image: "https://picsum.photos/id/525/1920/1080",
+    image: "/units/pahlawan.png",
     heroImage: "/hero2.svg",
     tagline: "Mitra Bisnis\nTerpercaya.",
     subtitle: "Bergabunglah dengan jaringan franchise laundry yang terus berkembang di Indonesia. Didukung sistem, tim profesional, dan peluang keuntungan berkelanjutan.",
   },
   {
-    image: "https://picsum.photos/id/534/1920/1080",
+    image: "/units/madrasah.jpg",
     heroImage: "/hero3.svg",
     tagline: "Teknologi Modern,\nHasil Maksimal.",
     subtitle: "Bangun bisnis laundry autopilot dengan passive income berkelanjutan. Tim kami mengelola segalanya — Anda cukup memantau profit.",
@@ -196,14 +196,14 @@ const testimonials = [
 ];
 
 const galleryImages = [
-  { src: "https://picsum.photos/id/395/600/400", alt: "Outlet modern SHO SHA", span: "tall" as const },
-  { src: "https://picsum.photos/id/401/600/400", alt: "Mesin cuci industri", span: "normal" as const },
-  { src: "https://picsum.photos/id/403/600/400", alt: "Tim profesional", span: "wide" as const },
-  { src: "https://picsum.photos/id/399/600/400", alt: "Hasil cucian rapi", span: "normal" as const },
-  { src: "https://picsum.photos/id/411/600/400", alt: "Proses quality control", span: "tall" as const },
-  { src: "https://picsum.photos/id/416/600/400", alt: "Area packing premium", span: "normal" as const },
-  { src: "https://picsum.photos/id/431/600/400", alt: "Interior outlet bersih", span: "wide" as const },
-  { src: "https://picsum.photos/id/435/600/400", alt: "Layanan antar jemput", span: "normal" as const },
+  { src: "/gallery/galeri.jpg", alt: "Outlet modern SHO SHA", span: "tall" as const },
+  { src: "/units/rd24j.png", alt: "Mesin cuci industri", span: "normal" as const },
+  { src: "/units/rd_lama.jpg", alt: "Tim profesional", span: "wide" as const },
+  { src: "/units/pahlawan.png", alt: "Hasil cucian rapi", span: "normal" as const },
+  { src: "/units/pulo.png", alt: "Proses quality control", span: "tall" as const },
+  { src: "/units/rd_lama2.jpg", alt: "Area packing premium", span: "normal" as const },
+  { src: "/mesin/mesin1.jpg", alt: "Interior outlet bersih", span: "wide" as const },
+  { src: "/units/madrasah.jpg", alt: "Layanan antar jemput", span: "normal" as const },
 ];
 
 const navLinks = [
@@ -230,8 +230,8 @@ const outlets = [
 
 const socialLinks = [
   { icon: Instagram, href: "https://www.instagram.com/shoshalaundryofficial", label: "Instagram" },
-  { icon: Facebook, href: "#", label: "Facebook" },
-  { icon: MessageCircle, href: "#", label: "WhatsApp" },
+  { icon: Facebook, href: "https://www.facebook.com/profile.php?id=100087515256650", label: "Facebook" },
+  { icon: MessageCircle, href: "https://wa.me/628111774438", label: "WhatsApp" },
 ];
 
 /* ═══════════════════════════════════════════
@@ -395,7 +395,7 @@ export default function Home() {
 
             <div className="flex items-center gap-3">
               <Button size="sm" className="hidden rounded-xl text-xs sm:inline-flex" asChild>
-                <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
                   Hubungi Kami
                 </a>
@@ -465,7 +465,7 @@ export default function Home() {
                   </div>
                   
                   <Button size="sm" className="rounded-xl text-xs sm:inline-flex" asChild>
-                    <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                    <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                       <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
                       Hubungi Kami
                     </a>
@@ -533,7 +533,7 @@ export default function Home() {
                 className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:items-start lg:items-center"
               >
                 <Button size="lg" className="group gap-2 rounded-xl px-8 text-base" asChild>
-                  <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                     Hubungi Kami
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </a>
@@ -693,7 +693,7 @@ export default function Home() {
                     ))}
                   </ul>
                   <Button className="mt-8 w-full rounded-xl" variant="outline" size="lg" asChild>
-                    <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                    <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                       Selengkapnya
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </a>
@@ -799,7 +799,7 @@ export default function Home() {
                   </ul>
 
                   <Button className={`mt-8 w-full rounded-xl text-sm ${i === 1 ? "bg-white text-primary hover:bg-white/90" : "border-primary/50 text-primary hover:bg-primary hover:text-primary-foreground"}`} variant={i === 1 ? "default" : "outline"} size="lg" asChild>
-                    <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                    <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                       <Handshake className="mr-2 h-4 w-4" />
                       Jadi Mitra {pkg.name}
                     </a>
@@ -949,13 +949,13 @@ export default function Home() {
               <p className="relative mx-auto mt-4 max-w-lg text-base text-primary-foreground/80">Konsultasikan rencana investasi Anda dengan tim profesional kami. Dapatkan proposal lengkap dan jadwalkan kunjungan outlet.</p>
               <div className="relative mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Button size="lg" className="gap-2 rounded-xl bg-white px-8 text-base font-semibold text-primary shadow-xl hover:bg-white/90" asChild>
-                  <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="h-4 w-4" />
                     Hubungi Kami
                   </a>
                 </Button>
                 <Button size="lg" variant="ghost" className="gap-2 rounded-xl border border-white/20 text-base text-primary-foreground hover:bg-white/10" asChild>
-                  <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                     <Calendar className="h-4 w-4" />
                     Jadwalkan Konsultasi
                   </a>
@@ -1018,8 +1018,8 @@ export default function Home() {
 
             <div>
               <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Kantor Pusat</h4>
-              <p className="mt-6 text-sm text-accent-foreground/50 leading-relaxed">BSD Business Center, Tower B Lt. 12<br />Tangerang, Indonesia 15310</p>
-              <p className="mt-4 text-lg font-bold">07:00 - 21:00</p>
+              <p className="mt-6 text-sm text-accent-foreground/50 leading-relaxed">Jl. Pahlawan No.34, RT.1/RW.5, Sukabumi Selatan<br />Kec. Kebon Jeruk, Kota Jakarta Barat<br />Daerah Khusus Ibukota Jakarta 11560, Indonesia</p>
+              <p className="mt-4 text-lg font-bold">08:00 - 20:00</p>
               <p className="mt-1 text-xs text-accent-foreground/30">Setiap hari buka</p>
             </div>
           </div>

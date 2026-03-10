@@ -108,8 +108,8 @@ const outlets = [
 
 const socialLinks = [
   { icon: Instagram, href: "https://www.instagram.com/shoshalaundryofficial", label: "Instagram" },
-  { icon: Facebook, href: "#", label: "Facebook" },
-  { icon: MessageCircle, href: "#", label: "WhatsApp" },
+  { icon: Facebook, href: "https://www.facebook.com/profile.php?id=100087515256650", label: "Facebook" },
+  { icon: MessageCircle, href: "https://wa.me/628111774438", label: "WhatsApp" },
 ];
 
 /* ═══════════════════════════════════════════
@@ -179,7 +179,7 @@ export default function Faq() {
    DATA ARRAYS — edit these to update content
    ═══════════════════════════════════════════ */
   const hero = {
-      image: "https://picsum.photos/id/534/1920/1080",
+      image: "/units/madrasah.jpg",
       heroImage: "/hero3.svg",
       tagline: "Pertanyaan\nUmum.",
       subtitle: "Bangun bisnis laundry autopilot dengan passive income berkelanjutan. Tim kami mengelola segalanya — Anda cukup memantau profit.",
@@ -273,7 +273,7 @@ export default function Faq() {
 
             <div className="flex items-center gap-3">
               <Button size="sm" className="hidden rounded-xl text-xs sm:inline-flex" asChild>
-                <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
                   Hubungi Kami
                 </a>
@@ -343,7 +343,7 @@ export default function Faq() {
                   </div>
                   
                   <Button size="sm" className="rounded-xl text-xs sm:inline-flex" asChild>
-                    <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                    <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                       <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
                       Hubungi Kami
                     </a>
@@ -393,7 +393,7 @@ export default function Faq() {
                 className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:items-start lg:items-center"
               >
                 <Button size="lg" className="group gap-2 rounded-xl px-8 text-base" asChild>
-                  <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
                     Hubungi Kami
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </a>
@@ -499,7 +499,7 @@ export default function Faq() {
                   asChild
                 >
                   <a
-                    href="https://wa.me/6281234567890"
+                    href="https://wa.me/628111774438"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -514,7 +514,7 @@ export default function Faq() {
                   asChild
                 >
                   <a
-                    href="https://wa.me/6281234567890"
+                    href="https://wa.me/628111774438"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -580,8 +580,8 @@ export default function Faq() {
 
             <div>
               <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Kantor Pusat</h4>
-              <p className="mt-6 text-sm text-accent-foreground/50 leading-relaxed">BSD Business Center, Tower B Lt. 12<br />Tangerang, Indonesia 15310</p>
-              <p className="mt-4 text-lg font-bold">07:00 - 21:00</p>
+              <p className="mt-6 text-sm text-accent-foreground/50 leading-relaxed">Jl. Pahlawan No.34, RT.1/RW.5, Sukabumi Selatan<br />Kec. Kebon Jeruk, Kota Jakarta Barat<br />Daerah Khusus Ibukota Jakarta 11560, Indonesia</p>
+              <p className="mt-4 text-lg font-bold">08:00 - 20:00</p>
               <p className="mt-1 text-xs text-accent-foreground/30">Setiap hari buka</p>
             </div>
           </div>
