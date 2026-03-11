@@ -52,6 +52,7 @@ import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import DropdownMenuCabang from "@/components/ui/dropdown-menu-cabang";
 import Link from "next/link";
+import Footer from "@/components/layouts/footer";
 
 const faqItems = [
   {
@@ -105,12 +106,6 @@ const outlets = [
   "Radio Dalam 24 Jam",
   "Tanah Kusir",
 ]
-
-const socialLinks = [
-  { icon: Instagram, href: "https://www.instagram.com/shoshalaundryofficial", label: "Instagram" },
-  { icon: Facebook, href: "https://www.facebook.com/profile.php?id=100087515256650", label: "Facebook" },
-  { icon: MessageCircle, href: "https://wa.me/628111774438", label: "WhatsApp" },
-];
 
 /* ═══════════════════════════════════════════
    COMPONENTS
@@ -180,7 +175,7 @@ export default function Faq() {
    ═══════════════════════════════════════════ */
   const hero = {
       image: "/units/madrasah.jpg",
-      heroImage: "/hero3.svg",
+      heroImage: "/hero/hero3.svg",
       tagline: "Pertanyaan\nUmum.",
       subtitle: "Bangun bisnis laundry autopilot dengan passive income berkelanjutan. Tim kami mengelola segalanya — Anda cukup memantau profit.",
     };
@@ -231,7 +226,7 @@ export default function Faq() {
             }`}
           >
             <a href="/home" className="flex items-center gap-2">
-              <img src="/logo.svg" alt="SHO SHA Logo" className="h-10 w-auto" />
+              <img src="/assets/logo.svg" alt="SHO SHA Logo" className="h-10 w-auto" />
             </a>
 
             {/* Custom Right-Aligned Navigation */}
@@ -527,76 +522,7 @@ export default function Faq() {
           </FadeIn>
         </div>
       </section>
-
-      {/* ═══ FOOTER ═══ */}
-      <footer className="border-t border-accent-foreground/10 bg-accent px-6 py-20 text-accent-foreground">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-16 lg:grid-cols-4">
-            <div className="lg:col-span-1">
-              <img src="/logo.svg" alt="SHO SHA Logo" className="h-9 w-auto brightness-0 invert opacity-60" />
-              <p className="mt-6 text-sm leading-relaxed text-accent-foreground/50">Memberikan kenyamanan laundry terbaik dan peluang investasi autopilot paling menguntungkan di Indonesia.</p>
-              <div className="mt-8 flex gap-3">
-                {socialLinks.map((item, i) => {
-                  const Icon = item.icon;
-
-                  return (
-                    <a
-                      key={i}
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex h-10 w-10 items-center justify-center rounded-2xl bg-accent-foreground/5 text-accent-foreground/40 transition-all hover:bg-primary hover:text-primary-foreground hover:scale-110"
-                    >
-                      <Icon className="h-5 w-5" />
-                    </a>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-8 lg:col-span-2">
-              <div>
-                <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Navigasi</h4>
-                <ul className="mt-6 space-y-4 text-sm text-accent-foreground/50">
-                  {navLinks
-                    .filter((link) => link.label !== "Cabang")
-                    .map((link) => (
-                    <li key={link.label} className="transition-colors hover:text-primary">
-                      <a href={link.href}>{link.label}</a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Layanan</h4>
-                <ul className="mt-6 space-y-4 text-sm text-accent-foreground/50">
-                  <li className="transition-colors hover:text-primary">Self-Service</li>
-                  <li className="transition-colors hover:text-primary">Drop-Off Laundry</li>
-                  <li className="transition-colors hover:text-primary">Membership TORU</li>
-                  <li className="transition-colors hover:text-primary">Premium Care</li>
-                </ul>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Kantor Pusat</h4>
-              <p className="mt-6 text-sm text-accent-foreground/50 leading-relaxed">Jl. Pahlawan No.34, RT.1/RW.5, Sukabumi Selatan<br />Kec. Kebon Jeruk, Kota Jakarta Barat<br />Daerah Khusus Ibukota Jakarta 11560, Indonesia</p>
-              <p className="mt-4 text-lg font-bold">08:00 - 20:00</p>
-              <p className="mt-1 text-xs text-accent-foreground/30">Setiap hari buka</p>
-            </div>
-          </div>
-
-          <Separator className="my-16 bg-accent-foreground/10" />
-
-          <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
-            <p className="text-[10px] font-medium uppercase tracking-widest text-accent-foreground/30">&copy; {new Date().getFullYear()} SHO SHA LAUNDRY. All RIGHTS RESERVED.</p>
-            <div className="flex gap-8 text-[10px] font-medium uppercase tracking-widest text-accent-foreground/30">
-              <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer navLinks={navLinks}/>
     </div>
   );
 }

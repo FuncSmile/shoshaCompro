@@ -51,6 +51,8 @@ import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import DropdownMenuCabang from "@/components/ui/dropdown-menu-cabang";
 import Link from "next/link";
+import Gallery from "@/components/layouts/gallery";
+import Footer from "@/components/layouts/footer";
 
 /* ═══════════════════════════════════════════
    DATA ARRAYS — edit these to update content
@@ -58,20 +60,20 @@ import Link from "next/link";
 
 const heroSlides = [
   {
-    image: "/mesin/mesin1.jpg",
-    heroImage: "/hero1.svg",
+    image: "/mesin/mesin1_rdlama.jpg",
+    heroImage: "/hero/hero1.svg",
     tagline: "Bersih Sempurna,\nSetiap Helai.",
     subtitle: "Layanan laundry profesional dengan standar premium untuk pakaian Anda.",
   },
   {
-    image: "/units/pahlawan.png",
-    heroImage: "/hero2.svg",
+    image: "/mesin/mesin1_ciledug.jpg",
+    heroImage: "/hero/hero2.svg",
     tagline: "Mitra Bisnis\nTerpercaya.",
     subtitle: "Bergabunglah dengan jaringan franchise laundry yang terus berkembang di Indonesia. Didukung sistem, tim profesional, dan peluang keuntungan berkelanjutan.",
   },
   {
-    image: "/units/madrasah.jpg",
-    heroImage: "/hero3.svg",
+    image: "/units/rd24j2.jpg",
+    heroImage: "/hero/hero3.svg",
     tagline: "Teknologi Modern,\nHasil Maksimal.",
     subtitle: "Bangun bisnis laundry autopilot dengan passive income berkelanjutan. Tim kami mengelola segalanya — Anda cukup memantau profit.",
   },
@@ -179,31 +181,20 @@ const testimonials = [
     name: "Dewi Kartika",
     role: "Pelanggan",
     text: "Saya sudah mencuci di SHO-SHA hampir 3 tahun dan selalu puas dengan hasilnya.",
-    img: "/user.png",
+    img: "/assets/user.png",
   },
   {
     name: "Rina Sari",
     role: "Pelanggan",
     text: "Laundry di SHO-SHA benar-benar beda. Pakaian selalu bersih, wangi, dan cepat selesai.",
-    img: "/user.png",
+    img: "/assets/user.png",
   },
   {
     name: "Budi Rizwan",
     role: "Pelanggan",
     text: "Bergabung dengan SHO-SHA adalah keputusan terbaik saya.",
-    img: "/user.png",
+    img: "/assets/user.png",
   },
-];
-
-const galleryImages = [
-  { src: "/gallery/galeri.jpg", alt: "Outlet modern SHO SHA", span: "tall" as const },
-  { src: "/units/rd24j.png", alt: "Mesin cuci industri", span: "normal" as const },
-  { src: "/units/rd_lama.jpg", alt: "Tim profesional", span: "wide" as const },
-  { src: "/units/pahlawan.png", alt: "Hasil cucian rapi", span: "normal" as const },
-  { src: "/units/pulo.png", alt: "Proses quality control", span: "tall" as const },
-  { src: "/units/rd_lama2.jpg", alt: "Area packing premium", span: "normal" as const },
-  { src: "/mesin/mesin1.jpg", alt: "Interior outlet bersih", span: "wide" as const },
-  { src: "/units/madrasah.jpg", alt: "Layanan antar jemput", span: "normal" as const },
 ];
 
 const navLinks = [
@@ -323,10 +314,6 @@ export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openCabang, setOpenCabang] = useState(false);
 
-  /* ── Gallery lightbox ── */
-  const [lightboxOpen, setLightboxOpen] = useState(false);  
-  const [lightboxIndex, setLightboxIndex] = useState(0);
-
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handler, { passive: true });
@@ -353,7 +340,7 @@ export default function Home() {
             }`}
           >
             <a href="/home" className="flex items-center gap-2">
-              <img src="/logo.svg" alt="SHO SHA Logo" className="h-10 w-auto" />
+              <img src="/assets/logo.svg" alt="SHO SHA Logo" className="h-10 w-auto" />
             </a>
 
             {/* Custom Right-Aligned Navigation */}
@@ -640,7 +627,7 @@ export default function Home() {
             {/* Right Column: Hero Image */}
             <motion.div initial={{ opacity: 0, scale: 0.8, x: 20 }} animate={{ opacity: 1, scale: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.8 }} className="relative hidden lg:block">
               <div className="relative z-10 flex justify-center">
-                <img src="/picture2.svg" alt="SHO SHA Hero Image" className="h-full w-full object-contain drop-shadow-2xl" loading="eager" fetchPriority="high" />
+                <img src="/hero/picture2.svg" alt="SHO SHA Hero Image" className="h-full w-full object-contain drop-shadow-2xl" loading="eager" fetchPriority="high" />
               </div>
 
               <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} className="absolute left-6 top-12 rounded-2xl border border-border/50 bg-card/80 p-4 shadow-xl backdrop-blur-md will-change-transform">
@@ -885,55 +872,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ═══ GALLERY — Collage Masonry ═══ */}
-      <section id="gallery" className="px-6 py-28 bg-gradient-to-b from-orange-50 to-primary-foreground">
-        <div className="mx-auto max-w-6xl">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.6 }}>
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent">Gallery</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">Lihat lebih dekat.</h2>
-          </motion.div>
-
-          <div className="mt-14 grid auto-rows-[200px] grid-cols-2 gap-4 md:grid-cols-4">
-            {galleryImages.map((img, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: i * 0.06, duration: 0.5 }}
-                className={`group relative cursor-pointer overflow-hidden rounded-2xl ${img.span === "tall" ? "row-span-2" : img.span === "wide" ? "col-span-2" : ""}`}
-                onClick={() => {
-                  setLightboxIndex(i);
-                  setLightboxOpen(true);
-                }}
-              >
-                <img src={img.src} alt={img.alt} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <p className="text-sm font-medium text-white">{img.alt}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Lightbox */}
-        <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
-          <DialogContent className="max-w-4xl border-none bg-black/95 p-0">
-            <div className="relative">
-              <img src={galleryImages[lightboxIndex]?.src} alt={galleryImages[lightboxIndex]?.alt} className="max-h-[80vh] w-full object-contain" />
-              <p className="absolute bottom-4 left-4 text-sm font-medium text-white/80">{galleryImages[lightboxIndex]?.alt}</p>
-              <button onClick={() => setLightboxIndex((p) => (p - 1 + galleryImages.length) % galleryImages.length)} className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm hover:bg-white/20" aria-label="Previous image">
-                <ChevronLeft className="h-5 w-5" />
-              </button>
-              <button onClick={() => setLightboxIndex((p) => (p + 1) % galleryImages.length)} className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm hover:bg-white/20" aria-label="Next image">
-                <ChevronRight className="h-5 w-5" />
-              </button>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </section>
-
+      <Gallery />
       {/* ═══ CTA SECTION ═══ */}
       <section className="px-6 py-16 bg-orange-50">
         <div className="mx-auto max-w-6xl">
@@ -965,76 +904,7 @@ export default function Home() {
           </FadeIn>
         </div>
       </section>
-
-      {/* ═══ FOOTER ═══ */}
-      <footer className="border-t border-accent-foreground/10 bg-accent px-6 py-20 text-accent-foreground">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid gap-16 lg:grid-cols-4">
-            <div className="lg:col-span-1">
-              <img src="/logo.svg" alt="SHO SHA Logo" className="h-9 w-auto brightness-0 invert opacity-60" />
-              <p className="mt-6 text-sm leading-relaxed text-accent-foreground/50">Memberikan kenyamanan laundry terbaik dan peluang investasi autopilot paling menguntungkan di Indonesia.</p>
-              <div className="mt-8 flex gap-3">
-                {socialLinks.map((item, i) => {
-                  const Icon = item.icon;
-
-                  return (
-                    <a
-                      key={i}
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex h-10 w-10 items-center justify-center rounded-2xl bg-accent-foreground/5 text-accent-foreground/40 transition-all hover:bg-primary hover:text-primary-foreground hover:scale-110"
-                    >
-                      <Icon className="h-5 w-5" />
-                    </a>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-8 lg:col-span-2">
-              <div>
-                <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Navigasi</h4>
-                <ul className="mt-6 space-y-4 text-sm text-accent-foreground/50">
-                  {navLinks
-                    .filter((link) => link.label !== "Cabang")
-                    .map((link) => (
-                    <li key={link.label} className="transition-colors hover:text-primary">
-                      <a href={link.href}>{link.label}</a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Layanan</h4>
-                <ul className="mt-6 space-y-4 text-sm text-accent-foreground/50">
-                  <li className="transition-colors hover:text-primary">Self-Service</li>
-                  <li className="transition-colors hover:text-primary">Drop-Off Laundry</li>
-                  <li className="transition-colors hover:text-primary">Membership TORU</li>
-                  <li className="transition-colors hover:text-primary">Premium Care</li>
-                </ul>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Kantor Pusat</h4>
-              <p className="mt-6 text-sm text-accent-foreground/50 leading-relaxed">Jl. Pahlawan No.34, RT.1/RW.5, Sukabumi Selatan<br />Kec. Kebon Jeruk, Kota Jakarta Barat<br />Daerah Khusus Ibukota Jakarta 11560, Indonesia</p>
-              <p className="mt-4 text-lg font-bold">08:00 - 20:00</p>
-              <p className="mt-1 text-xs text-accent-foreground/30">Setiap hari buka</p>
-            </div>
-          </div>
-
-          <Separator className="my-16 bg-accent-foreground/10" />
-
-          <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
-            <p className="text-[10px] font-medium uppercase tracking-widest text-accent-foreground/30">&copy; {new Date().getFullYear()} SHO SHA LAUNDRY. All RIGHTS RESERVED.</p>
-            <div className="flex gap-8 text-[10px] font-medium uppercase tracking-widest text-accent-foreground/30">
-              <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer navLinks={navLinks} />
     </div>
   );
 }

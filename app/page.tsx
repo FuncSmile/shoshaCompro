@@ -6,30 +6,29 @@ export default function WelcomePage() {
 
   const router = useRouter();
 
-  const units = [
-    { name: "Pahlawan", address: "Kebon Jeruk, Kota Jakarta Barat", path: "/units-pahlawan" }, //Jl. Pahlawan No.34, RT.10/RW.4, Sukabumi Sel., Kec. 
-    { name: "Radio Dalam Lama", address: " Kebayoran Baru, Jakarta", path: "/units-rd-lama" }, //Jl. Ps. Inpres No.65, RW.14, Gandaria Utara, Kec. 
-    { name: "Assirot", address: "Kebon Jeruk, Kota Jakarta Selatan", path: "/units-assirot" }, //Jl. Assirot No.8B, Grogol Sel., Kec. 
-    { name: "Ciledug", address: "Karang Tengah, Kota Tangerang", path: "/units-ciledug" }, //Jl. Raden Saleh No.55, RT.003/RW.008, Karang Tengah, Kec. 
-    { name: "Cipete Utara", address: "Kebayoran Baru, Kota Jakarta Selatan", path: "/units-cipete-utara" }, //Jl. Damai Raya No.9A, Cipete Utara, Kec. 
-    { name: "Kebon Mangga", address: "Kebayoran Lama, Kota Jakarta Selatan", path: "/units-kebon-mangga" }, //Jl. Kebon Mangga 1, RT.01/007, No.15, RT.5/RW.7, Cipulir, Kec. 
-    { name: "Kemanggisan Pulo", address: "Palmerah, Kota Jakarta Barat", path: "/units-k-pulo" }, //Jl. Kemanggisan Pulo, RT.4/RW.17, Palmerah, Kec. 
-    { name: "KPBD", address: "Kebon Jeruk, Kota Jakarta Barat", path: "/units-kpbd" }, //Jl. Raya Kby. Lama Jl. Kpbd No.6, RT.10/RW.1, Sukabumi Sel., Kec. 
-    { name: "Madrasah", address: "Cilandak, Kota Jakarta Selatan", path: "/units-madrasah" }, //Jl. Madrasah SDN No.1, RT.12/RW.2, Gandaria Sel., Kec. 
-    { name: "Petukangan Baru", address: "Pesanggrahan, Kota Jakarta Selatan", path: "/units-petukangan-baru" }, //Jl. H. Muchtar Raya No.37-1, RT.8/RW.1, Petukangan Utara, Kec. 
-    { name: "Petukangan Lama", address: "Pesanggrahan, Kota Jakarta Selatan", path: "/units-petukangan-lama" }, //Dekat Meliala Foto, Jl. Kostrad Pusri No.3, RT.3/RW.5, Petukangan Utara, Kec. 
-    { name: "Radio Dalam 24 Jam", address: "Kebayoran Baru, Kota Jakarta Selatan", path: "/units-rd-24j" }, //Jl. Ps. Inpres No.80a, RT.4/RW.14, Gandaria Utara, Kec. 
-    { name: "Tanah Kusir", address: "Kebayoran Lama, Kota Jakarta Selatan", path: "/units-tanah-kusir" }, //Jl. Tanah Kusir II No.15, RT.9/RW.9, Kby. Lama Sel., Kec. 
+  const outlets = [
+    { name: "Pahlawan", address: "Kebon Jeruk, Kota Jakarta Barat", icon: "/units-raw/pahlawan.png", path: "/units-pahlawan" }, //Jl. Pahlawan No.34, RT.10/RW.4, Sukabumi Sel., Kec. 
+    { name: "Radio Dalam Lama", address: " Kebayoran Baru, Jakarta", icon: "/units-raw/rd_lama.jpg", path: "/units-radio-dalam-lama" }, //Jl. Ps. Inpres No.65, RW.14, Gandaria Utara, Kec. 
+    { name: "Assirot", address: "Kebon Jeruk, Kota Jakarta Selatan", icon: "/units-raw/assirot.png", path: "/units-assirot" }, //Jl. Assirot No.8B, Grogol Sel., Kec. 
+    { name: "Ciledug", address: "Karang Tengah, Kota Tangerang", icon: "/units/ciledug.jpg", path: "/units-ciledug" }, //Jl. Raden Saleh No.55, RT.003/RW.008, Karang Tengah, Kec. 
+    { name: "Cipete Utara", address: "Kebayoran Baru, Kota Jakarta Selatan", icon: "/units/cipete.jpg", path: "/units-cipete-utara" }, //Jl. Damai Raya No.9A, Cipete Utara, Kec. 
+    { name: "Kebon Mangga", address: "Kebayoran Lama, Kota Jakarta Selatan", icon: "", path: "/units-kebon-mangga" }, //Jl. Kebon Mangga 1, RT.01/007, No.15, RT.5/RW.7, Cipulir, Kec. 
+    { name: "Kemanggisan Pulo", address: "Palmerah, Kota Jakarta Barat", icon: "/units-raw/pulo.png", path: "/units-kemanggisan-pulo" }, //Jl. Kemanggisan Pulo, RT.4/RW.17, Palmerah, Kec. 
+    { name: "KPBD", address: "Kebon Jeruk, Kota Jakarta Barat", icon: "/units-raw/kpbd.png", path: "/units-kpbd" }, //Jl. Raya Kby. Lama Jl. Kpbd No.6, RT.10/RW.1, Sukabumi Sel., Kec. 
+    { name: "Madrasah", address: "Cilandak, Kota Jakarta Selatan", icon: "/units/madrasah.jpg", path: "/units-madrasah" }, //Jl. Madrasah SDN No.1, RT.12/RW.2, Gandaria Sel., Kec. 
+    { name: "Petukangan Baru", address: "Pesanggrahan, Kota Jakarta Selatan", icon: "", path: "/units-petukangan-baru" }, //Jl. H. Muchtar Raya No.37-1, RT.8/RW.1, Petukangan Utara, Kec. 
+    { name: "Petukangan Lama", address: "Pesanggrahan, Kota Jakarta Selatan", icon: "/units-raw/ptk_lama.png", path: "/units-petukangan-lama" }, //Dekat Meliala Foto, Jl. Kostrad Pusri No.3, RT.3/RW.5, Petukangan Utara, Kec. 
+    { name: "Radio Dalam 24 Jam", address: "Kebayoran Baru, Kota Jakarta Selatan", icon: "/units/rd24j2.jpg", path: "/units-radio-dalam-24-jam" }, //Jl. Ps. Inpres No.80a, RT.4/RW.14, Gandaria Utara, Kec. 
+    { name: "Tanah Kusir", address: "Kebayoran Lama, Kota Jakarta Selatan", icon: "/units/tanah_kusir.jpg", path: "/units-tanah-kusir" }, //Jl. Tanah Kusir II No.15, RT.9/RW.9, Kby. Lama Sel., Kec. 
   ];
 
   return (
     <main className="relative min-h-screen flex justify-center pt-20 pb-20 px-6">
       {/* bg-[#FFF9E3] */}
-
       {/* Here to change BACKGROUND to Image*/}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/mesin/mesin1.jpg')" }}
+        style={{ backgroundImage: "url('/mesin/mesin1_rdlama.jpg')" }}
       />
 
       <div className="absolute inset-0 bg-white/40" />
@@ -38,7 +37,7 @@ export default function WelcomePage() {
       <div className="absolute right-4 xl:right-12 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-3">
         <p className="text-sm font-medium text-gray-700">Scan Instagram</p>
         <img
-          src="/qr_instagram.jpeg"
+          src="/assets/qr_instagram.jpeg"
           alt="Instagram QR"
           className="w-32 drop-shadow-lg hover:scale-110 transition duration-300 rounded-sm"
         />
@@ -66,7 +65,7 @@ export default function WelcomePage() {
         text-white
       ">
 
-        {/* SOCIAL ICONS - bigger */}
+        {/* SOCIAL ICONS */}
         <div className="absolute top-5 left-4 sm:left-6 flex gap-4">
           {/* Instagram */}
           <a
@@ -111,10 +110,10 @@ export default function WelcomePage() {
 
         {/* LOGO */}
         <img
-          src="/logo2.svg"
+          src="/assets/logo.svg"
           alt="Sho-Sha Laundry"
           className="
-            w-24 h-24 rounded-full object-cover shadow-lg mt-10 mb-5
+            w-24 h-24 bg-yellow-400 rounded-full object-cover shadow-lg mt-10 mb-5
           "
         />
 
@@ -152,10 +151,10 @@ export default function WelcomePage() {
 
         {/* UNITS */}
         <div className="w-full flex flex-col items-center gap-4">
-          {units.map((unit) => (
+          {outlets.map((outlet) => (
             <button
-              key={unit.path}
-              onClick={() => router.push(unit.path)}
+              key={outlet.path}
+              onClick={() => router.push(outlet.path)}
               className="
                 w-full bg-[#FFF7ED] text-gray-800 rounded-2xl py-3 px-4
                 flex items-center gap-3
@@ -167,16 +166,16 @@ export default function WelcomePage() {
               {/* Outlet Icon */}
               <span className="shrink-0 w-10 h-10 rounded-full overflow-hidden bg-white shadow-sm flex items-center justify-center">
                 <img 
-                  src="/mesin/mesin1.jpg" 
-                  alt="Outlet" 
+                  src={outlet.icon || "/mesin/mesin1_rdlama.jpg"}
+                  alt={`Outlet ${outlet.name}`}
                   className="w-full h-full object-cover"
                 />
               </span>
 
               {/* Name and Address */}
               <div className="flex-1">
-                <div className="font-semibold text-base sm:text-lg">{unit.name}</div>
-                <div className="text-xs sm:text-sm text-gray-600">{unit.address}</div>
+                <div className="font-semibold text-base sm:text-lg">{outlet.name}</div>
+                <div className="text-xs sm:text-sm text-gray-600">{outlet.address}</div>
               </div>
             </button>
           ))}
