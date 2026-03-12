@@ -3,8 +3,6 @@
 import dynamic from "next/dynamic";
 import { Instagram, MapPin, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
 import Footer from "@/components/layouts/footer";
 
 const MapContainer = dynamic(
@@ -30,16 +28,18 @@ const Popup = dynamic(
 export default function MadrasahOutlet() {
 
   const position: [number, number] = [-6.270206, 106.792635];
-  const [markerIcon, setMarkerIcon] = useState<L.Icon | null>(null);
+  const [markerIcon, setMarkerIcon] = useState<any>(null);
 
   useEffect(() => {
-    const icon = new L.Icon({
-      iconUrl: "/assets/point.gif",
-      iconSize: [70, 70],
-      iconAnchor: [36, 50],
-    });
+    import("leaflet").then((L) => {
+      const icon = new L.Icon({
+        iconUrl: "/assets/point.gif",
+        iconSize: [70, 70],
+        iconAnchor: [36, 50],
+      });
 
-    setMarkerIcon(icon);
+      setMarkerIcon(icon);
+    });
   }, []);
 
   const navLinks = [
