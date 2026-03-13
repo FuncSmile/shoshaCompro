@@ -32,6 +32,7 @@ export default function Footer({ navLinks }: FooterProps) {
               src="/assets/logo.svg"
               alt="SHO SHA Logo"
               className="h-9 w-auto brightness-0 invert opacity-60"
+              loading="lazy"
             />
 
             <p className="mt-6 text-sm leading-relaxed text-accent-foreground/50">

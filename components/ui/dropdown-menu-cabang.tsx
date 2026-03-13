@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useState } from "react"
 
 const outlets = [
   "Pahlawan",
@@ -20,43 +19,58 @@ const outlets = [
 ]
 
 const slugify = (text: string) =>
-  text.toLowerCase().replace(/\s+/g, "-")
+  text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-]+/g, "")
 
 export default function DropdownMenuCabang() {
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
   return (
     <div className="absolute right-0 top-full pt-4">
       <div
-        className={`w-[900px] rounded-b-2xl border border-border/50 backdrop-blur-xl shadow-xl overflow-hidden transition-all duration-300 ${
-          scrolled ? "bg-background/90" : "bg-background/70"
-        }`}
+        className="
+        w-[min(95vw,900px)]
+        max-h-[420px]
+        overflow-y-auto
+        rounded-2xl
+        border border-border/50
+        bg-background/95
+        backdrop-blur-xl
+        shadow-xl
+        p-4
+        "
       >
-        
-        {/* GRID */}
-        <div className="grid grid-cols-7 divide-x divide-y divide-border/60 gap-x-6 gap-y-3">
-
+        <div
+          className="
+          grid
+          grid-cols-2
+          sm:grid-cols-3
+          md:grid-cols-4
+          lg:grid-cols-5
+          xl:grid-cols-6
+          gap-2
+          "
+        >
           {outlets.map((outlet) => (
             <Link
               key={outlet}
               href={`/outlets/${slugify(outlet)}`}
-              className="px-2 py-3 text-sm font-medium text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors leading-snug"
+              className="
+              rounded-lg
+              px-3 py-2
+              text-sm
+              font-medium
+              text-muted-foreground
+              hover:bg-primary/10
+              hover:text-primary
+              transition-colors
+              "
             >
               {outlet}
             </Link>
           ))}
-
         </div>
-
       </div>
     </div>
   )

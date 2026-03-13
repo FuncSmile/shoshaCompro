@@ -2,25 +2,37 @@
 
 import { useRouter } from 'next/navigation';
 
+function slugify(text: string) {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[\s_]+/g, "-")
+    .replace(/[^\w\-]+/g, "")
+    .replace(/\-\-+/g, "-");
+}
+
 export default function WelcomePage() {
 
   const router = useRouter();
 
   const outlets = [
-    { name: "Pahlawan", address: "Kebon Jeruk, Kota Jakarta Barat", icon: "/units-raw/pahlawan.png", path: "/units/pahlawan" },
-    { name: "Radio Dalam Lama", address: " Kebayoran Baru, Jakarta", icon: "/units-raw/rd_lama.jpg", path: "/units/radio-dalam-lama" },
-    { name: "Assirot", address: "Kebon Jeruk, Kota Jakarta Selatan", icon: "/units-raw/assirot.png", path: "/units/assirot" },
-    { name: "Ciledug", address: "Karang Tengah, Kota Tangerang", icon: "/units/ciledug.jpg", path: "/units/ciledug" },
-    { name: "Cipete Utara", address: "Kebayoran Baru, Kota Jakarta Selatan", icon: "/units/cipete.jpg", path: "/units/cipete-utara" }, 
-    { name: "Kebon Mangga", address: "Kebayoran Lama, Kota Jakarta Selatan", icon: "", path: "/units/kebon-mangga" },
-    { name: "Kemanggisan Pulo", address: "Palmerah, Kota Jakarta Barat", icon: "/units-raw/pulo.png", path: "/units/kemanggisan-pulo" }, 
-    { name: "KPBD", address: "Kebon Jeruk, Kota Jakarta Barat", icon: "/units-raw/kpbd.png", path: "/units/kpbd" },
-    { name: "Madrasah", address: "Cilandak, Kota Jakarta Selatan", icon: "/units/madrasah.jpg", path: "/units/madrasah" },
-    { name: "Petukangan Baru", address: "Pesanggrahan, Kota Jakarta Selatan", icon: "", path: "/units/petukangan-baru" },
-    { name: "Petukangan Lama", address: "Pesanggrahan, Kota Jakarta Selatan", icon: "/units-raw/ptk_lama.png", path: "/units/petukangan-lama" },
-    { name: "Radio Dalam 24 Jam", address: "Kebayoran Baru, Kota Jakarta Selatan", icon: "/units/rd24j2.jpg", path: "/units/radio-dalam-24-jam" },
-    { name: "Tanah Kusir", address: "Kebayoran Lama, Kota Jakarta Selatan", icon: "/units/tanah_kusir.jpg", path: "/units/tanah-kusir" },
-  ];
+    { name: "Pahlawan", address: "Kebon Jeruk, Kota Jakarta Barat", icon: "/units-raw/pahlawan.png" },
+    { name: "Radio Dalam Lama", address: " Kebayoran Baru, Jakarta", icon: "/units-raw/rd_lama.jpg" },
+    { name: "Assirot", address: "Kebon Jeruk, Kota Jakarta Selatan", icon: "/units-raw/assirot.png" },
+    { name: "Ciledug", address: "Karang Tengah, Kota Tangerang", icon: "/units/ciledug.jpg" },
+    { name: "Cipete Utara", address: "Kebayoran Baru, Kota Jakarta Selatan", icon: "/units/cipete.jpg" }, 
+    { name: "Kebon Mangga", address: "Kebayoran Lama, Kota Jakarta Selatan", icon: "" },
+    { name: "Kemanggisan Pulo", address: "Palmerah, Kota Jakarta Barat", icon: "/units-raw/pulo.png" }, 
+    { name: "KPBD", address: "Kebon Jeruk, Kota Jakarta Barat", icon: "/units-raw/kpbd.png" },
+    { name: "Madrasah", address: "Cilandak, Kota Jakarta Selatan", icon: "/units/madrasah.jpg" },
+    { name: "Petukangan Baru", address: "Pesanggrahan, Kota Jakarta Selatan", icon: "" },
+    { name: "Petukangan Lama", address: "Pesanggrahan, Kota Jakarta Selatan", icon: "/units-raw/ptk_lama.png" },
+    { name: "Radio Dalam 24 Jam", address: "Kebayoran Baru, Kota Jakarta Selatan", icon: "/units/rd24j2.jpg" },
+    { name: "Tanah Kusir", address: "Kebayoran Lama, Kota Jakarta Selatan", icon: "/units/tanah_kusir.jpg" },
+  ].map(outlet => ({
+    ...outlet,
+    path: `/outlets/${slugify(outlet.name)}`,
+  }));
 
   return (
     <main className="relative min-h-screen flex justify-center pt-20 pb-20 px-6">

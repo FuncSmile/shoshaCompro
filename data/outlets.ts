@@ -1,3 +1,7 @@
+// Not used yet
+
+
+
 // export const oulets = [
 //   { name: "Pahlawan", address: "Kebon Jeruk, Kota Jakarta Barat", icon: "/units-raw/pahlawan.png", path: "/units-pahlawan" }, //Jl. Pahlawan No.34, RT.10/RW.4, Sukabumi Sel., Kec. 
 //   { name: "Radio Dalam Lama", address: " Kebayoran Baru, Jakarta", icon: "/units-raw/rd_lama.jpg", path: "/units-rd-lama" }, //Jl. Ps. Inpres No.65, RW.14, Gandaria Utara, Kec. 

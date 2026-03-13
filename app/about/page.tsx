@@ -65,6 +65,7 @@ const teamMembers = [
     role: "COO",
     desc: "Ahli operasional dan quality control dengan track record membangun 10+ outlet.",
     image: "/founder/yesi.svg",
+    loading: "lazy",
   },
 ];
 
@@ -164,6 +165,13 @@ const outlets = [
   "Tanah Kusir",
 ]
 
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-]+/g, "")
+
 /* ═══════════════════════════════════════════
    SECTION WRAPPER WITH FADE-IN
    ═══════════════════════════════════════════ */
@@ -213,10 +221,11 @@ export default function About() {
    DATA ARRAYS — edit these to update content
    ═══════════════════════════════════════════ */
   const hero = {
-      image: "/units-raw/pahlawan.png",
+      image: "/outlets/pahlawan.png",
       heroImage: "/hero/hero1.svg",
       tagline: "Tentang Kami,\nSHO-SHA.",
       subtitle: "Layanan laundry profesional dengan standar premium untuk pakaian Anda.",
+      priority: true,
     };
 
   const [isMobile, setIsMobile] = useState(false)
@@ -254,73 +263,131 @@ export default function About() {
     setOpenFaq((prev) => (prev === i ? null : i));
   }, []);
 
+  const slugify = (text: string) =>
+    text
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/[^\w\-]+/g, "")
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* ═══ NAVBAR — floating glassmorphism ═══ */}
       <nav className="fixed top-0 z-50 w-full">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
           <div
-            className={`mt-4 flex h-16 items-center justify-between rounded-2xl border border-border/50 px-8 shadow-lg shadow-black/5 backdrop-blur-xl transition-all duration-300 ${
+            className={`mt-4 flex h-16 items-center justify-between rounded-2xl border border-border/50 px-4 sm:px-6 lg:px-8 shadow-lg shadow-black/5 backdrop-blur-xl transition-all duration-300 ${
               scrolled ? "bg-background/90" : "bg-background/70"
             }`}
           >
-            <a href="/home" className="flex items-center gap-2">
-              <img src="/assets/logo.svg" alt="SHO SHA Logo" className="h-10 w-auto" />
-            </a>
 
-            {/* Custom Right-Aligned Navigation */}
-            <div className="hidden md:flex items-center ml-auto">
-              <ul className="flex items-center gap-2 text-right">
-                <li>
-                  <a href="/home" className="px-4 py-2 text-[13px] font-medium text-muted-foreground hover:text-primary transition-colors rounded-xl">
-                    Beranda
-                  </a>
-                </li>
-                <li>
-                  <a href="/about" className="px-4 py-2 text-[13px] font-medium text-orange-600 hover:text-orange-600 transition-colors rounded-xl">
-                    Tentang
-                  </a>
-                </li>
-                <li>
-                  <a href="/partnership" className="px-4 py-2 text-[13px] font-medium text-muted-foreground hover:text-primary transition-colors rounded-xl">
-                    Kemitraan
-                  </a>
-                </li>
-                <li>
-                  <a href="/faq" className="px-4 py-2 text-[13px] font-medium text-muted-foreground hover:text-primary transition-colors rounded-xl">
-                    FAQ
-                  </a>
-                </li>
+            {/* Logo */}
+            <Link href="/home" className="flex items-center gap-2">
+              <img
+                src="/assets/logo.svg"
+                alt="SHO SHA Logo"
+                className="h-10 w-auto"
+                loading="lazy"
+              />
+            </Link>
 
-                {/* Cabang Menu */}
-                <li className="relative group">
-                  <button className="px-4 py-2 text-[13px] font-medium text-muted-foreground hover:text-primary transition-colors rounded-xl flex items-center gap-1">
-                    Cabang <ChevronDown className="w-3 h-3 ml-1" />
-                  </button>
+            {/* Desktop Menu */}
+            <div className="hidden lg:flex items-center gap-2 ml-auto">
 
-                  <div className="invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-200">
-                    <DropdownMenuCabang />
-                  </div>
-                </li>
-              </ul>
+              <Link
+                href="/home"
+                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary rounded-xl"
+              >
+                Beranda
+              </Link>
+
+              <Link
+                href="/about"
+                className="px-4 py-2 text-sm font-medium text-orange-600 rounded-xl"
+              >
+                Tentang
+              </Link>
+
+
+              <Link
+                href="/partnership"
+                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary rounded-xl"
+              >
+                Kemitraan
+              </Link>
+
+              <Link
+                href="/faq"
+                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary rounded-xl"
+              >
+                FAQ
+              </Link>
+
+              {/* Cabang Dropdown */}
+              <div className="relative group">
+
+                <button
+                  className="
+                  flex items-center gap-1
+                  px-4 py-2
+                  text-sm font-medium
+                  text-muted-foreground
+                  hover:text-primary
+                  rounded-xl
+                  "
+                >
+                  Cabang
+                  <ChevronDown className="w-3 h-3" />
+                </button>
+
+                <div
+                  className="
+                  invisible opacity-0
+                  group-hover:visible
+                  group-hover:opacity-100
+                  transition-all duration-200
+                  "
+                >
+                  <DropdownMenuCabang />
+                </div>
+
+              </div>
+
             </div>
 
+            {/* CTA Desktop + Hamburger */}
             <div className="flex items-center gap-3">
-              <Button size="sm" className="hidden rounded-xl text-xs sm:inline-flex" asChild>
-                <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
+
+              {/* Desktop CTA */}
+              <Button
+                size="sm"
+                className="hidden lg:inline-flex rounded-xl text-xs"
+                asChild
+              >
+                <a
+                  href="https://wa.me/628111774438"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
                   Hubungi Kami
                 </a>
               </Button>
 
-              {/* Mobile hamburger */}
+              {/* Mobile Hamburger */}
               <button
-                className="flex h-9 w-9 items-center justify-center rounded-xl md:hidden"
+                className="flex h-9 w-9 items-center justify-center rounded-xl lg:hidden"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Toggle menu"
               >
-                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                {mobileMenuOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
               </button>
+
             </div>
           </div>
 
@@ -332,53 +399,95 @@ export default function About() {
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3 }}
-                className="overflow-hidden md:hidden"
+                className="overflow-hidden lg:hidden"
               >
-                <div className={`mt-2 flex flex-col gap-1 rounded-2xl border border-border/50 shadow-lg p-4 shadow-black/5 backdrop-blur-xl transition-all duration-300 ${
+                <div
+                  className={`mt-2 flex flex-col gap-1 rounded-2xl border border-border/50 shadow-lg p-4 backdrop-blur-xl ${
                     scrolled ? "bg-background/90" : "bg-background/70"
                   }`}
                 >
+
+                  {/* Navigation Links */}
                   {navLinks.map((item) => (
-                    <a
+                    <Link
                       key={item.label}
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                      className="
+                      rounded-xl
+                      px-4 py-3
+                      text-sm
+                      font-medium
+                      text-muted-foreground
+                      hover:bg-muted
+                      hover:text-foreground
+                      "
                     >
                       {item.label}
-                    </a>
+                    </Link>
                   ))}
 
-                  {/* Dropdown Cabang */}
+                  {/* Cabang Mobile */}
                   <div className="flex flex-col">
-                    <button
+
+                    <motion.button
+                      whileTap={{ scale: 0.95 }}
                       onClick={() => setOpenCabang(!openCabang)}
-                      className="flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                      className="
+                      flex w-full items-center justify-between
+                      rounded-xl px-4 py-3 text-sm font-medium
+                      text-muted-foreground
+                      hover:bg-muted
+                      "
                     >
-                      <span>Cabang</span>
-                      <ChevronDown className="w-3 h-3" />
-                    </button>
+                      Cabang
+
+                      <ChevronDown
+                        className={`w-3 h-3 transition-transform duration-300 ${
+                          openCabang ? "rotate-180" : ""
+                        }`}
+                      />
+                    </motion.button>
 
                     {openCabang && (
-                      <ul className="ml-4 mt-1 mb-1 flex flex-col divide-y divide-border/40 border-l border-border/40">
+                      <ul className="ml-4 flex max-h-64 flex-col overflow-y-auto border-l border-border/40 pr-2">
+
                         {outlets.map((outlet) => (
                           <li key={outlet}>
                             <Link
-                              href={`/units-${outlet.toLowerCase().replace(/\s+/g, "-")}`}
+                              href={`/outlets/${slugify(outlet)}`}
                               onClick={() => setMobileMenuOpen(false)}
-                              className="block px-4 py-2 text-sm text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                              className="
+                              block px-4 py-2 text-sm
+                              text-muted-foreground
+                              hover:text-primary
+                              "
                             >
                               {outlet}
                             </Link>
                           </li>
                         ))}
+
                       </ul>
                     )}
+
                   </div>
-                  
-                  <Button size="sm" className="rounded-xl text-xs sm:inline-flex" asChild>
-                    <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
-                      <MessageCircle className="mr-1.5 h-3.5 w-3.5" />
+
+                  {/* Divider */}
+                  <div className="my-2 border-t border-border/40" />
+
+                  {/* CTA Mobile */}
+                  <Button
+                    size="lg"
+                    className="w-full rounded-xl gap-2"
+                    asChild
+                  >
+                    <a
+                      href="https://wa.me/628111774438"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <MessageCircle className="h-4 w-4" />
                       Hubungi Kami
                     </a>
                   </Button>
@@ -424,7 +533,7 @@ export default function About() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
-                className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:items-start lg:items-center"
+                className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start"
               >
                 <Button size="lg" className="group gap-2 rounded-xl px-8 text-base" asChild>
                   <a href="https://wa.me/628111774438" target="_blank" rel="noopener noreferrer">
@@ -432,7 +541,13 @@ export default function About() {
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </a>
                 </Button>
-                <Button size="lg" variant="ghost" className="gap-2 rounded-xl border border-white/20 text-base text-white hover:bg-white/10" asChild>
+                
+                <Button
+                  size="lg"
+                  variant="ghost"
+                  className="gap-2 rounded-xl border border-white/20 text-base text-white hover:bg-white/10"
+                  asChild
+                >
                   <a href="/about">
                     Pelajari Lebih Lanjut
                     <ChevronDown className="h-4 w-4" />
@@ -588,7 +703,7 @@ export default function About() {
       </section>
 
       {/* ═══ LAYANAN ═══ */}
-      <section id="layanan" className="px-6 py-28">
+      <section className="px-6 py-28">
         <div className="mx-auto max-w-6xl">
           <FadeIn className="text-center">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
@@ -669,7 +784,7 @@ export default function About() {
       </div>
 
       {/* ═══ FAQ ═══ */}
-      <section id="faq" className="px-6 py-28">
+      <section className="px-6 py-28">
         <div className="mx-auto max-w-3xl">
           <FadeIn className="text-center">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
